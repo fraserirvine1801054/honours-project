@@ -101,10 +101,9 @@ app.post('/search', function(req,res){
 
             /**
              * Reformatting json parser to only return packages of data instead of individual sets
+             * 
+             * this will be needing a complete rewrite sometime in the future
              */
-
-
-
             switch(dataType){
                 case "CSV":
                     for (var i = 0; i < apiResponse.result.results.length; i++) {
@@ -122,8 +121,13 @@ app.post('/search', function(req,res){
                             }
                             var currentDataType = apiResponse.result.results[i].resources[j].format;
                             
+                            //replacing empty formats with "undefined"
+                            if (currentDataType === "") {
+                                currentDataType = "undefined";
+                            }
+
                             //boolean flag to check if a duplicate exists
-                            var isDuplicate;
+                            var isDuplicate = false;
 
                             for (var item of dataTypes){
                                 if (currentDataType == item){
@@ -134,7 +138,6 @@ app.post('/search', function(req,res){
                             if (!isDuplicate) {
                                 dataTypes.push(currentDataType);
                             }
-
                         }
 
                         if (hasCSV) {
@@ -166,8 +169,13 @@ app.post('/search', function(req,res){
                             
                             var currentDataType = apiResponse.result.results[i].resources[j].format;
 
+                            //replacing empty formats with "undefined"
+                            if (currentDataType === "") {
+                                currentDataType = "undefined";
+                            }
+
                             //boolean flag to check if a duplicate element exists
-                            var isDuplicate;
+                            var isDuplicate = false;
 
                             for (var item of dataTypes){
                                 if (currentDataType == item){
@@ -180,7 +188,6 @@ app.post('/search', function(req,res){
                             }
                             
                         }   
-
                         var myObj = {
                             "title" : `Title: ${apiResponse.result.results[i].title}`,
                             "date_created" : `Date Created: ${apiResponse.result.results[i].metadata_created}`,
