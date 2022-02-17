@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--can't figure out how to make external CSS work so i'll just use in head-->
+        <!-- <link rel="stylesheet" type="text/css" href="indexstyle.css"> -->
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Fraser Irvine (1801054) Honours Project proof of concept</h1>
+        <br>
+        <div id="indexIntro">
+            This is the main page where you can search for datasets
+        </div>
+        <div id="searchBar">
+            <p>Search options:</p>
+            <form action="/search" id="searchForm" class="form" method="POST">
+                <!-- search terms will allow users to search by keywords or by location-->
+                <label for="searchTerms">Search by Keywords/ Location</label><br>
+                <input type="text" name="searchTerms" id="searchTerms"><br><br>
+                <!-- filtering by data type if its geodata or CSV data-->
+                <label>Show:</label><br>
+                <input type="radio" id="dataCSV" name="dataType" value="CSV">
+                <label for="dataCSV">CSV (Comma Separated Values)</label><br>
+                <input type="radio" id="dataGEO" name="dataType" value="GEO">
+                <label for="dataGEO">Geographical (currently broken)</label><br>
+                <input type="radio" id="dataALL" name="dataType" value="ALL">
+                <label for="dataALL">Show All</label><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <br>
+        <hr>
+        <br>
+
+        <div id="searchReturns">
+            <!-- Displays search returns in table format -->
+            <table>
+                <tr>
+                    <th>Results</th>
+                </tr>
+
+                <% results.forEach(result => { %>
+                    <tr>
+                        <td>
+                            <ul>
+                                <li><%= result.title %></li>
+                                <li><%= result.date_created %></li>
+                                <li><%= result.date_modified %></li>
+                                <li><%= result.licence %></li>
+                                <li><%= result.data_type %></li>
+                                <li><%= result.data_url %></li>
+                            </ul>
+                        </td>
+                    </tr>
+                <% }); %>
+
+            </table>
+
+        </div>
+
+    </body>
+</html>
