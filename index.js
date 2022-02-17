@@ -23,7 +23,7 @@ app.get('/', function(req,res){
             "date_modified" : "",
             "licence" : "",
             "data_type" : "",
-            "data_url" : ""
+            "resources" : ""
         }
     ];
 
@@ -99,24 +99,54 @@ app.post('/search', function(req,res){
             //console.log(apiResponse.success);
             //console.log(apiResponse.result.results[0].resources[0].format);
 
-            //very roundabout way to filter JSON. May change in the future
+            /**
+             * Reformatting json parser to only return packages of data instead of individual sets
+             */
+
+
 
             switch(dataType){
                 case "CSV":
                     for (var i = 0; i < apiResponse.result.results.length; i++) {
-                        for (var j = 0; j < apiResponse.result.results[i].resources.length; j++) {
 
+                        //boolean to check if a CSV has been found in this package.
+                        var hasCSV;
+
+                        //array to store datatypes found in the package
+                        var dataTypes = [];
+
+                        for (var j = 0; j < apiResponse.result.results[i].resources.length; j++) {
+                            //look through "resources" to see if a CSV exists
                             if (apiResponse.result.results[i].resources[j].format === "CSV"){
-                                var myObj = {
-                                    "title" : `Title: ${apiResponse.result.results[i].title}`,
-                                    "date_created" : `Date Created: ${apiResponse.result.results[i].metadata_created}`,
-                                    "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
-                                    "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
-                                    "data_type" : `Data Type: CSV`,
-                                    "data_url" : `Data URL: ${apiResponse.result.results[i].resources[j].url}`
-                                };
-                                results.push(myObj);
+                                hasCSV = true;
                             }
+                            var currentDataType = apiResponse.result.results[i].resources[j].format;
+                            
+                            //boolean flag to check if a duplicate exists
+                            var isDuplicate;
+
+                            for (var item of dataTypes){
+                                if (currentDataType == item){
+                                    isDuplicate = true;
+                                }
+                            }
+                            
+                            if (!isDuplicate) {
+                                dataTypes.push(currentDataType);
+                            }
+
+                        }
+
+                        if (hasCSV) {
+                            var myObj = {
+                                "title" : `Title: ${apiResponse.result.results[i].title}`,
+                                "date_created" : `Date Created: ${apiResponse.result.results[i].metadata_created}`,
+                                "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
+                                "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
+                                "data_type" : `Data Types: ${dataTypes.join(", ")}`,
+                                "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`
+                            };
+                            results.push(myObj);
                         }
                     }
                     break;
@@ -128,24 +158,38 @@ app.post('/search', function(req,res){
                     break;
                 case "ALL":
                     for (var i = 0; i < apiResponse.result.results.length; i++) {
+                        
+                        //array to store data types found in this dataset
+                        var dataTypes = [];
+                        
                         for (var j = 0; j < apiResponse.result.results[i].resources.length; j++) {
-                            var jsonFormatValue;
-                            if (typeof apiResponse.result.results[i].resources[j].format === 'undefined'){
-                                jsonFormatValue = "undefined";
-                            } else {
-                                jsonFormatValue = apiResponse.result.results[i].resources[j].format;
+                            
+                            var currentDataType = apiResponse.result.results[i].resources[j].format;
+
+                            //boolean flag to check if a duplicate element exists
+                            var isDuplicate;
+
+                            for (var item of dataTypes){
+                                if (currentDataType == item){
+                                    isDuplicate = true;
+                                }
                             }
                             
-                            var myObj = {
-                                "title" : `Title: ${apiResponse.result.results[i].title}`,
-                                "date_created" : `Date Created: ${apiResponse.result.results[i].metadata_created}`,
-                                "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
-                                "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
-                                "data_type" : `Data Type: ${jsonFormatValue}`,
-                                "data_url" : `Data URL: ${apiResponse.result.results[i].resources[j].url}`
-                            };
-                            results.push(myObj);
+                            if (!isDuplicate) {
+                                dataTypes.push(currentDataType);
+                            }
+                            
                         }   
+
+                        var myObj = {
+                            "title" : `Title: ${apiResponse.result.results[i].title}`,
+                            "date_created" : `Date Created: ${apiResponse.result.results[i].metadata_created}`,
+                            "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
+                            "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
+                            "data_type" : `Data Types: ${dataTypes.join(", ")}`,
+                            "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`   
+                        };
+                        results.push(myObj);
                     }
                     break;
             }
