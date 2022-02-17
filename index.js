@@ -52,6 +52,24 @@ app.post('/search', function(req,res){
     var searchTerms = req.body.searchTerms;
     var dataType = req.body.dataType;
     
+    //extract parameters for row start and row counts
+    var rowStart = req.body.rowStart;
+    var rowCount = req.body.rowCount;
+
+    //reformat inputs from rowStart
+    if (rowStart == ''){
+        rowStart = 0;
+    } else {
+        rowStart = parseInt(rowStart);
+    }
+    
+    //reformat inputs from rowCount
+    if (rowCount == ''){
+        rowCount = 10;
+    } else {
+        rowCount = parseInt(rowCount);
+    }
+
     //storing the api response
     var apiResponse;
 
@@ -61,10 +79,15 @@ app.post('/search', function(req,res){
     /**
      * upon looking at CKAN's documentation, I don't think this is how the API request is supposed to work.
      * this will be a placeholder way until I can figure that out.
+     * 
+     * UPDATE:
+     * the parameters for showing more than 10 results in json is the "start" and "rows" parameter
+     * Link: https://solr.apache.org/guide/7_6/common-query-parameters.html
      */
+
     var XMLHttpRequest = require('xhr2');
     let request = new XMLHttpRequest();
-    request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}`);
+    request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}&start=${rowStart}&rows=${rowCount}`);
     request.send();
     request.onload = () => {
         console.log(request);
@@ -134,30 +157,6 @@ app.post('/search', function(req,res){
         }
     }
     
-    /*
-    //run python script to query data.gov.uk api
-    let {PythonShell} = require('python-shell');
-
-    let options = {
-        mode: 'text',
-        pythonPath: '',
-        pythonOptions: ['-u'],
-        scriptPath: 'pythonscripts',
-        args: [JSON.stringify(req.body)]
-    };
-
-    PythonShell.run('query_api.py', options, function(err, results){
-        if (err) throw err;
-        console.log('results: %j', results);
-    });
-    */
-
-    /*
-    pyshell.on('message', function(message){
-        console.log(message);
-    });
-    */
-    //return res.redirect('/');
 });
 
 app.listen(PORT);
@@ -169,6 +168,10 @@ console.log('Express server running at http://127.0.0.1:'.PORT);
  * https://stackoverflow.com/questions/20089582/how-to-get-a-url-parameter-in-express
  * 
  */
+
+
+
+
 
 // ===== old code being commented out =====
 /*const http = require('http');

@@ -10,7 +10,7 @@
         </style>
     </head>
     <body>
-        <h1>Fraser Irvine (1801054) Honours Project proof of concept</h1>
+        <h1>Fraser Irvine (1801054) Honours Project</h1>
         <br>
         <div id="indexIntro">
             This is the main page where you can search for datasets
@@ -29,6 +29,15 @@
                 <label for="dataGEO">Geographical (currently broken)</label><br>
                 <input type="radio" id="dataALL" name="dataType" value="ALL">
                 <label for="dataALL">Show All</label><br>
+                <!-- debug purposes. changes behaviour of api search to show more or less data-->
+                <p>
+                    Debug: changes behaviour of search api affecting number of values returned<br>
+                    (Leave empty for default values)
+                </p>
+                <label for="rowStart">Show results from start of row index (default: 0)</label>
+                <input type="number" id="rowStart" name="rowStart"><br>
+                <label for="rowCount">The count of how many rows (default: 10)</label>
+                <input type="number" id="rowCount" name="rowCount"><br>
                 <input type="submit" value="Submit">
             </form>
         </div>
