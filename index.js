@@ -23,15 +23,16 @@ app.get('/', function(req,res){
             "date_modified" : "",
             "licence" : "",
             "data_type" : "",
-            "resources" : ""
+            "resources" : "",
+            "package_id" : ""
         }
     ];
-
     res.render('index.ejs', {results : results});
 });
 
-//get query (unused)
 /*
+old GET Query code:
+
 app.get('/search', function(req,res){
     var queryKeywords = req.query.searchTerms;
     var queryDataType = req.query.dataType
@@ -147,7 +148,8 @@ app.post('/search', function(req,res){
                                 "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
                                 "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
                                 "data_type" : `Data Types: ${dataTypes.join(", ")}`,
-                                "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`
+                                "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`,
+                                "package_id" : apiResponse.result.results[i].id
                             };
                             results.push(myObj);
                         }
@@ -194,7 +196,8 @@ app.post('/search', function(req,res){
                             "date_modified" : `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
                             "licence" : `Licence: ${apiResponse.result.results[i].license_title}`,
                             "data_type" : `Data Types: ${dataTypes.join(", ")}`,
-                            "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`   
+                            "resources" : `Number of Resources: ${apiResponse.result.results[i].resources.length}`,
+                            "package_id" : apiResponse.result.results[i].id
                         };
                         results.push(myObj);
                     }
@@ -207,7 +210,6 @@ app.post('/search', function(req,res){
             console.log(`error ${request.status} ${request.statusText}`);
         }
     }
-    
 });
 
 app.listen(PORT);
@@ -217,12 +219,12 @@ console.log('Express server running at http://127.0.0.1:'.PORT);
  * Resources used:
  * https://stackoverflow.com/questions/6912584/how-to-get-get-query-string-variables-in-express-js-on-node-js
  * https://stackoverflow.com/questions/20089582/how-to-get-a-url-parameter-in-express
+ * https://guidance.data.gov.uk/get_data/api_documentation/#api-documentation
+ * https://solr.apache.org/guide/7_6/common-query-parameters.html
+ * 
+ * https://campusmoodle.rgu.ac.uk/pluginfile.php/5760308/mod_resource/content/2/GettingStarted.pdf
  * 
  */
-
-
-
-
 
 // ===== old code being commented out =====
 /*const http = require('http');
