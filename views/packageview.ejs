@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Simple Header -->
+        <h1>Package View</h1>
+        <br>
+        <div id="packageInfo">
+        
+            <h2>Title:</h2><br>
+            <%= packageObj.title %>
+            <h2>Licence:</h2><br>
+            <%= packageObj.licence %>
+            <h2>Date Created:</h2><br>
+            <%= packageObj.date_created %>
+            <h2>Date Modified:</h2><br>
+            <%= packageObj.date_modified %>
+
+        </div>
+        <hr>
+        <!--table for datasets -->
+        <table>
+            <tr>
+                <th>Datasets</th>
+            </tr>
+            <% datasets.forEach(dataset => { %>
+                <tr>
+                    <td>
+                        <ul>
+                            <li><%= dataset.description %></li>
+                            <li><%= dataset.date_reated %></li>
+                            <li><%= dataset.data_format %></li>
+                            <li><%= dataset.data_url %></li>
+                            <li><%= dataset.data_id %></li>
+                        </ul>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
+    </body>
+</html>

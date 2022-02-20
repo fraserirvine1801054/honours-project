@@ -72,7 +72,7 @@
 
                                         will use the "package_id" element in the result object
                                     -->
-                                    <form>
+                                    <form action=<%=`/packageview/${result.package_id}`%> id="viewPackageButton" method="GET">
                                         <input type="submit" value="View this data package">
                                     </form>
                                 </li>
