@@ -5,6 +5,24 @@
             html {
                 font-family: sans-serif;
             }
+
+            /* Package Info Table */
+            #packageInfoTable table,th,td {
+                border: 1px solid black;
+            }
+
+            /* Dataset Table Outer */
+
+            #datasetTableOuter table {
+                border: 1px solid black;
+            }
+
+            /* Dataset Table Inner*/
+
+            #datasetTableInner table,th,td {
+                border: 1px solid black;
+            }
+
         </style>
     </head>
 
@@ -12,37 +30,61 @@
         <!-- Simple Header -->
         <h1>Package View</h1>
         <br>
-        <div id="packageInfo">
-        
-            <h2>Title:</h2><br>
-            <%= packageObj.title %>
-            <h2>Licence:</h2><br>
-            <%= packageObj.licence %>
-            <h2>Date Created:</h2><br>
-            <%= packageObj.date_created %>
-            <h2>Date Modified:</h2><br>
-            <%= packageObj.date_modified %>
-
+        <b><u>Information about this package</u></b>
+        <div id="packageInfoTable">
+            <table>
+                <tr>
+                    <td>Title</td>
+                    <td><%= packageObj.p_title %></td>       
+                </tr>
+                <tr>
+                    <td>Licence</td>
+                    <td><%= packageObj.p_licence %></td>
+                </tr>
+                <tr>
+                    <td>Date Created</td>
+                    <td><%= packageObj.p_date_created %></td>
+                </tr>
+                <tr>
+                    <td>Date Modified</td>
+                    <td><%= packageObj.p_date_modified %></td>
+                </tr>
+            </table>
         </div>
         <hr>
         <!--table for datasets -->
-        <table>
+        <div id="datasetTableOuter">
+            <table>
             <tr>
                 <th>Datasets</th>
             </tr>
-            <% datasets.forEach(dataset => { %>
+            <% packageObj.datasets.forEach(dataset => { %>
                 <tr>
-                    <td>
-                        <ul>
-                            <li><%= dataset.description %></li>
-                            <li><%= dataset.date_reated %></li>
-                            <li><%= dataset.data_format %></li>
-                            <li><%= dataset.data_url %></li>
-                            <li><%= dataset.data_id %></li>
-                        </ul>
-                    </td>
+                    <div id="datasetTableInner">
+                        <table>
+                            <tr>
+                                <td>Description</td>
+                                <td><%= dataset.description %></td>
+                            </tr>
+                            <tr>
+                                <td>Data Format</td>
+                                <td><%= dataset.data_format %></td>
+                            </tr>
+                            <tr>
+                                <td>Data URL</td>
+                                <td><%= dataset.data_url %></td>
+                            </tr>
+                            <tr>
+                                <td>Data ID</td>
+                               <td><%= dataset.data_id %></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr>
                 </tr>
             <% }); %>
-        </table>
+            </table>
+        </div>
+        
     </body>
 </html>

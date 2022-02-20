@@ -239,7 +239,7 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
     request.onload = () => {
         console.log(request);
         if (request.status == 200) {
-            var apiResponse = Json.parse(request.response);
+            var apiResponse = JSON.parse(request.response);
             console.log(apiResponse);
 
             //parse package metadata into variables
@@ -249,11 +249,12 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
             var packageModDate = apiResponse.result.metadata_modified.split("T")[0];
 
             //create object for package metadata to send to ejs
-            var packageObj = {
-                "title" : packageTitle,
-                "licence" : packageLicense,
-                "date_created" : packageCreationDate,
-                "date_modified" : packageModDate
+            //"p_" stands for "package"
+            var packageMetaData = {
+                "p_title" : packageTitle,
+                "p_licence" : packageLicense,
+                "p_date_created" : packageCreationDate,
+                "p_date_modified" : packageModDate
             };
 
             //parse results into variable
@@ -273,24 +274,30 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
                 var dataUrl = item.url;
 
                 var datasetObj = {
-                    "description" : `Description: ${dataDescription}`,
-                    "date_created" : `Date Created: ${dataCreated}`,
-                    "data_format" : `Data Format: ${dataFormat}`,
-                    "data_url" : `Data URL: ${dataUrl}`,
-                    "data_id" : `Data ID: ${dataId}`
+                    "description" : `${dataDescription}`,
+                    "date_created" : `${dataCreated}`,
+                    "data_format" : `${dataFormat}`,
+                    "data_url" : `${dataUrl}`,
+                    "data_id" : `${dataId}`
                 };
 
                 datasets.push(datasetObj);
             });
 
+            //make JSON
+            var packageObj;
+            packageObj = packageMetaData;
+            packageObj.datasets = datasets;
+
+            //test created json
+            console.log(JSON.stringify(packageObj));
+
+            res.render('packageview.ejs', {packageObj : packageObj});
 
         } else {
             console.log(`error ${request.status} ${request.statusText}`);
         }
     }
-
-    res.render('packageview.ejs', {packageObj}, {datasets : datasets});
-
 });
 
 app.listen(PORT);
