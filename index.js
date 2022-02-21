@@ -58,14 +58,6 @@ searchRouter.get('/search', function(req,res){
     var rowStart = req.query.rowStart;
     var rowCount = req.query.rowCount;
 
-    //extract object into individual strings
-    //var searchTerms = req.body.searchTerms;
-    //var dataType = req.body.dataType;
-    
-    //extract parameters for row start and row counts
-    //var rowStart = req.body.rowStart;
-    //var rowCount = req.body.rowCount;
-
     //reformat inputs from rowStart
     if (rowStart == ''){
         rowStart = 0;

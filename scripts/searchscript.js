@@ -31,15 +31,12 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                 apiResponse = JSON.parse(request.response);
                 console.log(apiResponse);
 
-                //testing javascript json
-                //console.log(apiResponse.success);
-                //console.log(apiResponse.result.results[0].resources[0].format);
-
                 /**
                  * Reformatting json parser to only return packages of data instead of individual sets
                  * 
                  * this will be needing a complete rewrite sometime in the future
                  */
+
                 switch (dataType) {
                     case "CSV":
                         for (var i = 0; i < apiResponse.result.results.length; i++) {
@@ -91,10 +88,12 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                         }
                         break;
                     case "GEO":
+                        
                         /**
                          * Geographical data is formatted very strangely in data.gov.uk API
                          * it will be ignored for the proof of concept
                          */
+
                         break;
                     case "ALL":
                         for (var i = 0; i < apiResponse.result.results.length; i++) {
