@@ -17,7 +17,7 @@
         </div>
         <div id="searchBar">
             <p>Search options:</p>
-            <form action="/search" id="searchForm" class="form" method="POST">
+            <form action="/search" id="searchForm" class="form" method="GET">
                 <!-- search terms will allow users to search by keywords or by location-->
                 <label for="searchTerms">Search by Keywords/ Location</label><br>
                 <input type="text" name="searchTerms" id="searchTerms"><br><br>
@@ -40,6 +40,45 @@
                 <input type="number" id="rowCount" name="rowCount"><br>
                 <input type="submit" value="Submit">
             </form>
+
+            <script>
+                //builds a query string
+                function getQuery() {
+                    let myForm = document.getElementById('searchForm');
+                    let formData = new FormData(myForm);
+
+                    //var searchTerms = formData.get('searchTerms');
+                    //var dataType = formData.get('dataType');
+                    //var rowStart = formData.get('rowStart');
+                    //var rowCount = formData.get('rowCount');
+
+                    const params = new URLSearchParams({
+                        searchTerms : formData.get('searchTerms'),
+                        dataType : formData.get('dataType'),
+                        rowStart : formData.get('rowStart'),
+                        rowCount : formData.get('rowCount')
+                    });
+
+                    //var url = "/search" + params.toString();
+
+                    window.location.href = `/search?${params.toString}`;
+
+                    //reference: 
+                    //https://stackoverflow.com/questions/60266295/what-is-the-best-way-to-send-a-get-request-to-the-server-in-vanilla-javascript
+                    
+                    /*
+                    const http = new XMLHttpRequest();
+                    const url = `/search?${params.toString}`;
+                    http.open("GET", url);
+                    http.send();
+
+                    http.onreadystatechange = (e) => {
+                        console.log(http.responseText);
+                    }
+                    */
+                }
+            </script>
+
         </div>
         <br>
         <hr>

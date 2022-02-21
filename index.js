@@ -44,18 +44,27 @@ app.get('/search', function(req,res){javascript run function from another file
 });
 */
 
+var searchRouter = express.Router();
+
+app.use(searchRouter);
+
 //recieve form data
-app.post('/search', function(req,res){
+searchRouter.get('/search', function(req,res){
     console.log("search has been performed");
-    console.log(req.body);
+    //console.log(req.body);
     
+    var searchTerms = req.query.searchTerms;
+    var dataType = req.query.dataType;
+    var rowStart = req.query.rowStart;
+    var rowCount = req.query.rowCount;
+
     //extract object into individual strings
-    var searchTerms = req.body.searchTerms;
-    var dataType = req.body.dataType;
+    //var searchTerms = req.body.searchTerms;
+    //var dataType = req.body.dataType;
     
     //extract parameters for row start and row counts
-    var rowStart = req.body.rowStart;
-    var rowCount = req.body.rowCount;
+    //var rowStart = req.body.rowStart;
+    //var rowCount = req.body.rowCount;
 
     //reformat inputs from rowStart
     if (rowStart == ''){
