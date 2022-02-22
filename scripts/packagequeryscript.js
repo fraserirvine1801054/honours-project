@@ -16,11 +16,14 @@ function queryPackage(packageId) {
                 let apiResponse = JSON.parse(request.response);
                 console.log(apiResponse);
 
+                //shorten "apiResponse.result" into "apiRes"
+                let apiRes = apiResponse.result;
+
                 //parse package metadata into variables
-                let packageTitle = apiResponse.result.title;
-                let packageLicense = apiResponse.result.license_title;
-                let packageCreationDate = apiResponse.result.metadata_created.split("T")[0];
-                let packageModDate = apiResponse.result.metadata_modified.split("T")[0];
+                let packageTitle = apiRes.title;
+                let packageLicense = apiRes.license_title;
+                let packageCreationDate = apiRes.metadata_created.split("T")[0];
+                let packageModDate = apiRes.metadata_modified.split("T")[0];
 
                 //create object for package metadata to send to ejs
                 //"p_" stands for "package"

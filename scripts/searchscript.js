@@ -31,6 +31,9 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                 apiResponse = JSON.parse(request.response);
                 console.log(apiResponse);
 
+                //set this variable to shorten code below
+                let apiRes = apiResponse.result;
+
                 /**
                  * Reformatting json parser to only return packages of data instead of individual sets
                  * 
@@ -39,7 +42,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                 switch (dataType) {
                     case "CSV":
-                        for (let i = 0; i < apiResponse.result.results.length; i++) {
+                        for (let i = 0; i < apiRes.results.length; i++) {
 
                             //boolean to check if a CSV has been found in this package.
                             let hasCSV;
@@ -47,12 +50,12 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                             //array to store datatypes found in the package
                             let dataTypes = [];
 
-                            for (let j = 0; j < apiResponse.result.results[i].resources.length; j++) {
+                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
                                 //look through "resources" to see if a CSV exists
-                                if (apiResponse.result.results[i].resources[j].format === "CSV") {
+                                if (apiRes.results[i].resources[j].format === "CSV") {
                                     hasCSV = true;
                                 }
-                                let currentDataType = apiResponse.result.results[i].resources[j].format;
+                                let currentDataType = apiRes.results[i].resources[j].format;
 
                                 //replacing empty formats with "undefined"
                                 if (currentDataType === "") {
@@ -75,13 +78,13 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                             if (hasCSV) {
                                 let myObj = {
-                                    "title": `Title: ${apiResponse.result.results[i].title}`,
-                                    "date_created": `Date Created: ${apiResponse.result.results[i].metadata_created}`,
-                                    "date_modified": `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
-                                    "licence": `Licence: ${apiResponse.result.results[i].license_title}`,
+                                    "title": `Title: ${apiRes.results[i].title}`,
+                                    "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
+                                    "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
+                                    "licence": `Licence: ${apiRes.results[i].license_title}`,
                                     "data_type": `Data Types: ${dataTypes.join(", ")}`,
-                                    "resources": `Number of Resources: ${apiResponse.result.results[i].resources.length}`,
-                                    "package_id": apiResponse.result.results[i].id
+                                    "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
+                                    "package_id": apiRes.results[i].id
                                 };
                                 results.push(myObj);
                             }
@@ -96,14 +99,14 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                         break;
                     case "ALL":
-                        for (let i = 0; i < apiResponse.result.results.length; i++) {
+                        for (let i = 0; i < apiRes.results.length; i++) {
 
                             //array to store data types found in this dataset
                             let dataTypes = [];
 
-                            for (let j = 0; j < apiResponse.result.results[i].resources.length; j++) {
+                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
 
-                                let currentDataType = apiResponse.result.results[i].resources[j].format;
+                                let currentDataType = apiRes.results[i].resources[j].format;
 
                                 //replacing empty formats with "undefined"
                                 if (currentDataType === "") {
@@ -125,13 +128,13 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                             }
                             let myObj = {
-                                "title": `Title: ${apiResponse.result.results[i].title}`,
-                                "date_created": `Date Created: ${apiResponse.result.results[i].metadata_created}`,
-                                "date_modified": `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
-                                "licence": `Licence: ${apiResponse.result.results[i].license_title}`,
+                                "title": `Title: ${apiRes.results[i].title}`,
+                                "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
+                                "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
+                                "licence": `Licence: ${apiRes.results[i].license_title}`,
                                 "data_type": `Data Types: ${dataTypes.join(", ")}`,
-                                "resources": `Number of Resources: ${apiResponse.result.results[i].resources.length}`,
-                                "package_id": apiResponse.result.results[i].id
+                                "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
+                                "package_id": apiRes.results[i].id
                             };
                             results.push(myObj);
                         }
