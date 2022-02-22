@@ -21,7 +21,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
          * Link: https://solr.apache.org/guide/7_6/common-query-parameters.html
          */
 
-        let XMLHttpRequest = require('xhr2');
+        const XMLHttpRequest = require('xhr2');
         let request = new XMLHttpRequest();
         request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}&start=${rowStart}&rows=${rowCount}`);
         request.send();
@@ -31,7 +31,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                 apiResponse = JSON.parse(request.response);
                 console.log(apiResponse);
 
-                //set this variable to shorten code below
+                //shorten "apiResponse.result" into "apiRes"
                 let apiRes = apiResponse.result;
 
                 /**

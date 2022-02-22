@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--can't figure out how to make external CSS work so i'll just use in head-->
-        <!-- <link rel="stylesheet" type="text/css" href="indexstyle.css"> -->
         <style>
             html {
                 font-family: sans-serif;
@@ -17,8 +15,8 @@
         </div>
         <div id="searchBar">
             <p>Search options:</p>
-            <form action="/search" id="searchForm" class="form" method="GET">
-                <!-- search terms will allow users to search by keywords or by location-->
+            <!-- recently converte        <!--can't figure out how to make external CSS work so i'll just use in head-->
+        <!-- <link rel="stylesheet" type="text/css" href="indexstyle.css"> --> will allow users to search by keywords or by location -->
                 <label for="searchTerms">Search by Keywords/ Location</label><br>
                 <input type="text" name="searchTerms" id="searchTerms"><br><br>
                 <!-- filtering by data type if its geodata or CSV data-->
@@ -29,7 +27,7 @@
                 <label for="dataGEO">Geographical (currently broken)</label><br>
                 <input type="radio" id="dataALL" name="dataType" value="ALL">
                 <label for="dataALL">Show All</label><br>
-                <!-- debug purposes. changes behaviour of api search to show more or less data-->
+                <!-- debug purposes. changes behaviour of api search to show more or less data -->
                 <p>
                     Debug: changes behaviour of search api affecting number of values returned<br>
                     (Leave empty for default values)
@@ -38,44 +36,37 @@
                 <input type="number" id="rowStart" name="rowStart"><br>
                 <label for="rowCount">The count of how many rows (default: 10)</label>
                 <input type="number" id="rowCount" name="rowCount"><br>
-                <input type="submit" value="Submit">
-            </form>
+                <!-- button converted to perform action instead of submit -->
+                <button onclick="getQuery()">Submit</button>
+            </div>
 
             <script>
                 //builds a query string
                 function getQuery() {
-                    let myForm = document.getElementById('searchForm');
-                    let formData = new FormData(myForm);
-
-                    //var searchTerms = formData.get('searchTerms');
-                    //var dataType = formData.get('dataType');
-                    //var rowStart = formData.get('rowStart');
-                    //var rowCount = formData.get('rowCount');
-
-                    const params = new URLSearchParams({
-                        searchTerms : formData.get('searchTerms'),
-                        dataType : formData.get('dataType'),
-                        rowStart : formData.get('rowStart'),
-                        rowCount : formData.get('rowCount')
-                    });
-
-                    //var url = "/search" + params.toString();
-
-                    window.location.href = `/search?${params.toString}`;
-
-                    //reference: 
-                    //https://stackoverflow.com/questions/60266295/what-is-the-best-way-to-send-a-get-request-to-the-server-in-vanilla-javascript
                     
-                    /*
-                    const http = new XMLHttpRequest();
-                    const url = `/search?${params.toString}`;
-                    http.open("GET", url);
-                    http.send();
+                    let searchTerms = document.getElementById("searchTerms").value;
+                    let rowStart = document.getElementById("rowStart").value;
+                    let rowCount = document.getElementById("rowCount").value;
 
-                    http.onreadystatechange = (e) => {
-                        console.log(http.responseText);
+                    let dataType = "";
+
+                    //parse value of radio buttons
+                    if (document.getElementById("dataCSV").checked == true) {
+                        dataType = "CSV";
+                    } else if (document.getElementById("dataGEO").checked == true) {
+                        dataType = "GEO";
+                    } else if (document.getElementById("dataALL").checked == true) {
+                        dataType = "ALL";
                     }
-                    */
+
+                    let params = new URLSearchParams({
+                        searchTerms : searchTerms,
+                        dataType : dataType,
+                        rowStart : rowStart,
+                        rowCount : rowCount
+                    }).toString();
+                    window.location.href = `/search?${params}`;
+
                 }
             </script>
 
@@ -119,10 +110,7 @@
                         </td>
                     </tr>
                 <% }); %>
-
             </table>
-
         </div>
-
     </body>
 </html>
