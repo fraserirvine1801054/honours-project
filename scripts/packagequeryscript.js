@@ -6,25 +6,25 @@
 function queryPackage(packageId) {
 
     return new Promise((resolve, reject) => {
-        var XMLHttpRequest = require('xhr2');
+        const XMLHttpRequest = require('xhr2');
         let request = new XMLHttpRequest();
         request.open("GET", `https://ckan.publishing.service.gov.uk/api/action/package_show?id=${packageId}`);
         request.send();
         request.onload = () => {
             console.log(request);
             if (request.status == 200) {
-                var apiResponse = JSON.parse(request.response);
+                let apiResponse = JSON.parse(request.response);
                 console.log(apiResponse);
 
                 //parse package metadata into variables
-                var packageTitle = apiResponse.result.title;
-                var packageLicense = apiResponse.result.license_title;
-                var packageCreationDate = apiResponse.result.metadata_created.split("T")[0];
-                var packageModDate = apiResponse.result.metadata_modified.split("T")[0];
+                let packageTitle = apiResponse.result.title;
+                let packageLicense = apiResponse.result.license_title;
+                let packageCreationDate = apiResponse.result.metadata_created.split("T")[0];
+                let packageModDate = apiResponse.result.metadata_modified.split("T")[0];
 
                 //create object for package metadata to send to ejs
                 //"p_" stands for "package"
-                var packageMetaData = {
+                let packageMetaData = {
                     "p_title": packageTitle,
                     "p_licence": packageLicense,
                     "p_date_created": packageCreationDate,
@@ -32,22 +32,22 @@ function queryPackage(packageId) {
                 };
 
                 //parse results into variable
-                var resourceArray = apiResponse.result.resources;
+                let resourceArray = apiResponse.result.resources;
 
                 //instantiate array for containing datasets
-                var datasets = [];
+                let datasets = [];
 
                 //experiment with foreach loops
                 resourceArray.forEach(item => {
                     //get dataset id:
-                    var dataId = item.id;
+                    let dataId = item.id;
                     //parse json into variables
-                    var dataDescription = item.description;
-                    var dataCreated = item.created;
-                    var dataFormat = item.format;
-                    var dataUrl = item.url;
+                    let dataDescription = item.description;
+                    let dataCreated = item.created;
+                    let dataFormat = item.format;
+                    let dataUrl = item.url;
 
-                    var datasetObj = {
+                    let datasetObj = {
                         "description": `${dataDescription}`,
                         "date_created": `${dataCreated}`,
                         "data_format": `${dataFormat}`,
@@ -59,7 +59,7 @@ function queryPackage(packageId) {
                 });
 
                 //make JSON
-                var packageObj;
+                let packageObj;
                 packageObj = packageMetaData;
                 packageObj.datasets = datasets;
 

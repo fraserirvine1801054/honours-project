@@ -7,10 +7,10 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
     return new Promise((resolve, reject) => {
         //storing the api response
-        var apiResponse;
+        let apiResponse;
 
         //initialising empty json object to be displayed to the main page
-        var results = [];
+        let results = [];
 
         /**
          * upon looking at CKAN's documentation, I don't think this is how the API request is supposed to work.
@@ -21,7 +21,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
          * Link: https://solr.apache.org/guide/7_6/common-query-parameters.html
          */
 
-        var XMLHttpRequest = require('xhr2');
+        let XMLHttpRequest = require('xhr2');
         let request = new XMLHttpRequest();
         request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}&start=${rowStart}&rows=${rowCount}`);
         request.send();
@@ -39,20 +39,20 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                 switch (dataType) {
                     case "CSV":
-                        for (var i = 0; i < apiResponse.result.results.length; i++) {
+                        for (let i = 0; i < apiResponse.result.results.length; i++) {
 
                             //boolean to check if a CSV has been found in this package.
-                            var hasCSV;
+                            let hasCSV;
 
                             //array to store datatypes found in the package
-                            var dataTypes = [];
+                            let dataTypes = [];
 
-                            for (var j = 0; j < apiResponse.result.results[i].resources.length; j++) {
+                            for (let j = 0; j < apiResponse.result.results[i].resources.length; j++) {
                                 //look through "resources" to see if a CSV exists
                                 if (apiResponse.result.results[i].resources[j].format === "CSV") {
                                     hasCSV = true;
                                 }
-                                var currentDataType = apiResponse.result.results[i].resources[j].format;
+                                let currentDataType = apiResponse.result.results[i].resources[j].format;
 
                                 //replacing empty formats with "undefined"
                                 if (currentDataType === "") {
@@ -60,9 +60,9 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                                 }
 
                                 //boolean flag to check if a duplicate exists
-                                var isDuplicate = false;
+                                let isDuplicate = false;
 
-                                for (var item of dataTypes) {
+                                for (let item of dataTypes) {
                                     if (currentDataType == item) {
                                         isDuplicate = true;
                                     }
@@ -74,7 +74,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                             }
 
                             if (hasCSV) {
-                                var myObj = {
+                                let myObj = {
                                     "title": `Title: ${apiResponse.result.results[i].title}`,
                                     "date_created": `Date Created: ${apiResponse.result.results[i].metadata_created}`,
                                     "date_modified": `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
@@ -96,14 +96,14 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                         break;
                     case "ALL":
-                        for (var i = 0; i < apiResponse.result.results.length; i++) {
+                        for (let i = 0; i < apiResponse.result.results.length; i++) {
 
                             //array to store data types found in this dataset
-                            var dataTypes = [];
+                            let dataTypes = [];
 
-                            for (var j = 0; j < apiResponse.result.results[i].resources.length; j++) {
+                            for (let j = 0; j < apiResponse.result.results[i].resources.length; j++) {
 
-                                var currentDataType = apiResponse.result.results[i].resources[j].format;
+                                let currentDataType = apiResponse.result.results[i].resources[j].format;
 
                                 //replacing empty formats with "undefined"
                                 if (currentDataType === "") {
@@ -111,9 +111,9 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                                 }
 
                                 //boolean flag to check if a duplicate element exists
-                                var isDuplicate = false;
+                                let isDuplicate = false;
 
-                                for (var item of dataTypes) {
+                                for (let item of dataTypes) {
                                     if (currentDataType == item) {
                                         isDuplicate = true;
                                     }
@@ -124,7 +124,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                                 }
 
                             }
-                            var myObj = {
+                            let myObj = {
                                 "title": `Title: ${apiResponse.result.results[i].title}`,
                                 "date_created": `Date Created: ${apiResponse.result.results[i].metadata_created}`,
                                 "date_modified": `Last Modified: ${apiResponse.result.results[i].metadata_modified}`,
