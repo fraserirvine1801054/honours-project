@@ -96,12 +96,6 @@
                                 <li><%= result.data_type %></li>
                                 <li><%= result.resources %></li>
                                 <li>
-                                    <!--
-                                        placeholder for implementing a button that will redirect the user to a
-                                        new page that shows all datasets within the package to choose from
-
-                                        will use the "package_id" element in the result object
-                                    -->
                                     <form action=<%=`/packageview/${result.package_id}`%> id="viewPackageButton" method="GET">
                                         <input type="submit" value="View this data package">
                                     </form>

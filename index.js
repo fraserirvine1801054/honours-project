@@ -113,6 +113,16 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
     );
 });
 
+const reactTestRouter = express.Router();
+
+app.use(reactTestRouter);
+
+//test react.js
+reactTestRouter.get('/reacttest', (req,res) => {
+    console.log("entered react test");
+
+});
+
 app.listen(PORT);
 console.log('Express server running at http://127.0.0.1:'.PORT);
 
