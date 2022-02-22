@@ -1,22 +1,22 @@
 //new code using express
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 const { json } = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
-var router = express.Router();
+const router = express.Router();
 
 app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 8080;
 
-var port = PORT;
+const port = PORT;
 
 //render the page in ejs
 app.get('/', function(req,res){
 
     //roundabout way to render the main page with empty results
-    var results = [
+    let results = [
         {
             "title" : "",
             "date_created" : "",
@@ -44,7 +44,7 @@ app.get('/search', function(req,res){javascript run function from another file
 });
 */
 
-var searchRouter = express.Router();
+const searchRouter = express.Router();
 
 app.use(searchRouter);
 
@@ -53,10 +53,10 @@ searchRouter.get('/search', function(req,res){
     console.log("search has been performed");
     //console.log(req.body);
     
-    var searchTerms = req.query.searchTerms;
-    var dataType = req.query.dataType;
-    var rowStart = req.query.rowStart;
-    var rowCount = req.query.rowCount;
+    let searchTerms = req.query.searchTerms;
+    let dataType = req.query.dataType;
+    let rowStart = req.query.rowStart;
+    let rowCount = req.query.rowCount;
 
     //reformat inputs from rowStart
     if (rowStart == ''){
@@ -74,7 +74,7 @@ searchRouter.get('/search', function(req,res){
 
 
     //var results = await searchScript.makeSearch(searchTerms,dataType,rowStart,rowCount);
-    var searchScript = require("./scripts/searchscript");
+    let searchScript = require("./scripts/searchscript");
     
     searchScript.makeSearch(searchTerms,dataType,rowStart,rowCount).then(
         results => {
@@ -85,7 +85,7 @@ searchRouter.get('/search', function(req,res){
 });
 
 
-var packageViewRouter = express.Router();
+const packageViewRouter = express.Router();
 
 app.use(packageViewRouter);
 
@@ -104,7 +104,7 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
     console.log("test package view with params");
     console.log(`The parameter is: ${req.params.packageid}`);
 
-    var packageQueryScript = require("./scripts/packagequeryscript");
+    let packageQueryScript = require("./scripts/packagequeryscript");
 
     packageQueryScript.queryPackage(req.params.packageid).then(
         packageObj => {
