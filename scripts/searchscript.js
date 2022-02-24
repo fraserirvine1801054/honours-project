@@ -110,7 +110,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                             for (let j = 0; j < apiRes.results[i].resources.length; j++) {
                                 //look through "resources" to see if a CSV exists
-                                if (apiRes.results[i].resources[j].format === "ESRI REST") {
+                                if (apiRes.results[i].resources[j].format === "Esri REST") {
                                     hasESRIREST = true;
                                 }
                                 let currentDataType = apiRes.results[i].resources[j].format;
