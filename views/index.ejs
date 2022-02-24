@@ -25,6 +25,8 @@
                 <label for="dataCSV">CSV (Comma Separated Values)</label><br>
                 <input type="radio" id="dataGEO" name="dataType" value="GEO">
                 <label for="dataGEO">Geographical (currently broken)</label><br>
+                <input type="radio" id="dataESRIREST" name="dataType" value="ESRIREST">
+                <label for="dataESRIREST">ESRI REST</label><br>
                 <input type="radio" id="dataALL" name="dataType" value="ALL">
                 <label for="dataALL">Show All</label><br>
                 <!-- debug purposes. changes behaviour of api search to show more or less data -->
@@ -55,6 +57,8 @@
                         dataType = "CSV";
                     } else if (document.getElementById("dataGEO").checked == true) {
                         dataType = "GEO";
+                    } else if (document.getElementById("dataESRIREST").checked == true) {
+                        dataType = "ESRIREST";
                     } else if (document.getElementById("dataALL").checked == true) {
                         dataType = "ALL";
                     }

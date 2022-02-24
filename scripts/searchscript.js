@@ -98,6 +98,57 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                          */
 
                         break;
+                    case "ESRIREST":
+                        
+                        for (let i = 0; i < apiRes.results.length; i++) {
+
+                            //boolean to check if a CSV has been found in this package.
+                            let hasESRIREST;
+
+                            //array to store datatypes found in the package
+                            let dataTypes = [];
+
+                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
+                                //look through "resources" to see if a CSV exists
+                                if (apiRes.results[i].resources[j].format === "ESRI REST") {
+                                    hasESRIREST = true;
+                                }
+                                let currentDataType = apiRes.results[i].resources[j].format;
+
+                                //replacing empty formats with "undefined"
+                                if (currentDataType === "") {
+                                    currentDataType = "undefined";
+                                }
+
+                                //boolean flag to check if a duplicate exists
+                                let isDuplicate = false;
+
+                                for (let item of dataTypes) {
+                                    if (currentDataType == item) {
+                                        isDuplicate = true;
+                                    }
+                                }
+
+                                if (!isDuplicate) {
+                                    dataTypes.push(currentDataType);
+                                }
+                            }
+
+                            if (hasESRIREST) {
+                                let myObj = {
+                                    "title": `Title: ${apiRes.results[i].title}`,
+                                    "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
+                                    "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
+                                    "licence": `Licence: ${apiRes.results[i].license_title}`,
+                                    "data_type": `Data Types: ${dataTypes.join(", ")}`,
+                                    "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
+                                    "package_id": apiRes.results[i].id
+                                };
+                                results.push(myObj);
+                            }
+                        }
+                        
+                        break;
                     case "ALL":
                         for (let i = 0; i < apiRes.results.length; i++) {
 
