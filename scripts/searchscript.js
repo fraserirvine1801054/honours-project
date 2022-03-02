@@ -3,6 +3,8 @@
  * 
  * returns a promise with json object
  */
+import mongocontrol from "./mongocontrol";
+
 function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
     return new Promise((resolve, reject) => {
@@ -33,16 +35,6 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
                 //shorten "apiResponse.result" into "apiRes"
                 let apiRes = apiResponse.result;
-
-                /**
-                 * Reformatting json parser to only return packages of data instead of individual sets
-                 * 
-                 * this will be needing a complete rewrite sometime in the future
-                 */
-
-                /**
-                 * new code
-                 */
 
                 for (let i = 0; i < apiRes.results.length; i++) {
                     let hasFilteredType = dataType;
@@ -76,6 +68,16 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                             dataTypes.push(currentDataType);
                         }
 
+                        //check for if package has entry on database.
+                        let dbQuery = mongocontrol.queryDbOnPackageSearch(apiRes.results[i].id);
+                        let packageHasDb = false;
+
+                        if (dbQuery === {}) {
+                            packageHasDb = false;
+                        } else {
+                            packageHasDb = true;
+                        }
+
                         if (hasFilteredType) {
                             let myObj = {
                                 "title": `Title: ${apiRes.results[i].title}`,
@@ -84,7 +86,8 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                                 "licence": `Licence: ${apiRes.results[i].license_title}`,
                                 "data_type": `Data Types: ${dataTypes.join(", ")}`,
                                 "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
-                                "package_id": apiRes.results[i].id
+                                "package_id": apiRes.results[i].id,
+                                "package_hasdb": packageHasDb
                             };
                             results.push(myObj);
                         }

@@ -25,7 +25,8 @@ app.get('/', function(req,res){
             "licence" : "",
             "data_type" : "",
             "resources" : "",
-            "package_id" : ""
+            "package_id" : "",
+            "package_hasdb": false
         }
     ];
     res.render('index.ejs', {results : results});

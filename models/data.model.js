@@ -7,6 +7,10 @@ import mongoose from 'mongoose';
 
 const dataSchema = new mongoose.Schema({
 
+    package_id: {
+        type: String,
+        requred: 'A package ID is required'
+    },
     data_id: {
         type: String,
         required: 'A data ID is required'
