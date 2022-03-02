@@ -11,6 +11,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 8080;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const port = PORT;
 
@@ -127,7 +128,10 @@ insertDataRouter.get('/insertdata', (req,res) => {
 
 insertDataRouter.post('/insertdata', (req,res) => {
 
-    console.log(req.body);
+    console.log(`post test: ${req.body}`);
+
+
+
 
 });
 

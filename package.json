@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://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@github.com/fraserirvine1801054/honours-proof-of-concept.git"
+    "url": "https://github.com/fraserirvine1801054/honours-proof-of-concept.git"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "express": "^4.17.2",
     "jquery": "^3.6.0",
     "jsdom": "^19.0.0",
+    "mongoose": "^6.2.4",
     "python-shell": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
