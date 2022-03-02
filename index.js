@@ -113,13 +113,13 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
     );
 });
 
-const reactTestRouter = express.Router();
+const insertDataRouter = express.Router();
 
-app.use(reactTestRouter);
+app.use(insertDataRouter);
 
-//test react.js
-reactTestRouter.get('/reacttest', (req,res) => {
-    console.log("entered react test");
+insertDataRouter.get('/insertdata', (req,res) => {
+
+    res.render('insertdataview.ejs');
 
 });
 

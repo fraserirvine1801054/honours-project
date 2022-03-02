@@ -8,6 +8,15 @@
         </style>
     </head>
     <body>
+
+        <!-- navigation -->
+
+        <div id="navBar">
+            <form action="/insertdata" id="navInsertData" method="GET">
+                <input type="submit" value="[Debug] Add data">
+            </form>
+        </div>
+
         <h1>Fraser Irvine (1801054) Honours Project</h1>
         <br>
         <div id="indexIntro">
@@ -15,8 +24,6 @@
         </div>
         <div id="searchBar">
             <p>Search options:</p>
-            <!-- recently converte        <!--can't figure out how to make external CSS work so i'll just use in head-->
-        <!-- <link rel="stylesheet" type="text/css" href="indexstyle.css"> --> will allow users to search by keywords or by location -->
                 <label for="searchTerms">Search by Keywords/ Location</label><br>
                 <input type="text" name="searchTerms" id="searchTerms"><br><br>
                 <!-- filtering by data type if its geodata or CSV data-->
@@ -27,6 +34,8 @@
                 <label for="dataGEO">Geographical (currently broken)</label><br>
                 <input type="radio" id="dataESRIREST" name="dataType" value="ESRIREST">
                 <label for="dataESRIREST">ESRI REST</label><br>
+                <input type="radio" id="dataHTML" name="dataType" value="HTML">
+                <label for="dataHTML">HTML</label><br>
                 <input type="radio" id="dataALL" name="dataType" value="ALL">
                 <label for="dataALL">Show All</label><br>
                 <!-- debug purposes. changes behaviour of api search to show more or less data -->
@@ -59,6 +68,8 @@
                         dataType = "GEO";
                     } else if (document.getElementById("dataESRIREST").checked == true) {
                         dataType = "ESRIREST";
+                    } else if (document.getElementById("dataHTML").checked == true) {
+                        dataType = "HTML";
                     } else if (document.getElementById("dataALL").checked == true) {
                         dataType = "ALL";
                     }

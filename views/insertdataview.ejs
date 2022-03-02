@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+        </style>
+
+        <script>
+            // placeholder for code that handles the POST request
+        </script>
+
+    </head>
+    <body>
+        <!-- Navigation -->
+        <div id="navBar">
+            <form action="/" id="navHomeButton" method="GET">
+                <input type="submit" value="Return to Search">
+            </form>
+        </div>
+        <h1>Insert Data View</h1>
+
+        <!-- big form to insert data to database -->
+
+        <!--
+            [planning]
+            Required Parameters:
+            data_id : for linking databse with api returns
+            data_file : Actual data file. can be substituted with a simple text line for testing
+
+            (lower priority)
+            Visualisation Parameters:
+            dataVis_type : {
+                "LINE" // line graph (to be used for must haves)
+                "HIST" // histogram
+                "BARC" // bar chart
+                "PIEC" // pie chart
+            }
+        -->
+
+        <div id="formContainer">
+
+            <label for="dataId">Data ID (must match with API)</label><br>
+            <input type="text" id="formDataId" name="dataId"><br>
+            <br>
+            <label for="dataFile">Data File (a text line for testing purposes)</label><br>
+            <input type="text" id="formDataFile" name="dataFile"><br>
+
+        </div>
+
+    </body>
+</html>
