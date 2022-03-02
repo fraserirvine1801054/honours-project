@@ -11,7 +11,7 @@
             
             function sendPost() {
                 // prepare POST request
-                let url = "";
+                let url = "/insertdata";
 
                 let xhr = new XMLHttpRequest();
                 xhr.open("POST", url);
@@ -27,8 +27,8 @@
 
                 //parse form
 
-                let dataId = document.getElementById("formDataId");
-                let dataFile = document.getElementById("formDataFile");
+                let dataId = document.getElementById("formDataId").value;
+                let dataFile = document.getElementById("formDataFile").value;
 
                 let data = {
                     data_Id : dataId,
@@ -36,6 +36,7 @@
                 }
 
                 // send the data
+                
                 xhr.send(JSON.stringify(data));
             }
 
