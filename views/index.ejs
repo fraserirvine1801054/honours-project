@@ -112,7 +112,7 @@
                                 <li><%= result.resources %></li>
                                 <li>
                                     <form action=<%=`/packageview/${result.package_id}`%> id="viewPackageButton" method="GET">
-                                        <input type="submit" value="View this data package">
+                                        <input type="submit" id="submitButton" value="<%= result.package_hasdb_text %>">
                                     </form>
                                 </li>
                             </ul>

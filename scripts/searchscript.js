@@ -3,7 +3,7 @@
  * 
  * returns a promise with json object
  */
-import mongocontrol from "./mongocontrol";
+
 
 function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
@@ -69,6 +69,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                         }
 
                         //check for if package has entry on database.
+                        let mongocontrol = require("./mongocontrol");
                         let dbQuery = mongocontrol.queryDbOnPackageSearch(apiRes.results[i].id);
                         let packageHasDb = false;
 
@@ -76,6 +77,18 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                             packageHasDb = false;
                         } else {
                             packageHasDb = true;
+                        }
+
+                        /**
+                         * roundabout way to display if the package has a db link or not
+                         */
+
+                        let hasDbText = "";
+
+                        if (packageHasDb) {
+                            hasDbText = "View this package (Visualisation available)";
+                        } else {
+                            hasDbText = "View this package";
                         }
 
                         if (hasFilteredType) {
@@ -87,7 +100,8 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                                 "data_type": `Data Types: ${dataTypes.join(", ")}`,
                                 "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
                                 "package_id": apiRes.results[i].id,
-                                "package_hasdb": packageHasDb
+                                "package_hasdb": packageHasDb,
+                                "package_hasdb_text": hasDbText
                             };
                             results.push(myObj);
                         }

@@ -26,7 +26,8 @@ app.get('/', function(req,res){
             "data_type" : "",
             "resources" : "",
             "package_id" : "",
-            "package_hasdb": false
+            "package_hasdb": false,
+            "package_hasdb_text": ""
         }
     ];
     res.render('index.ejs', {results : results});
