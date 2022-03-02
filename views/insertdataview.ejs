@@ -8,7 +8,37 @@
         </style>
 
         <script>
-            // placeholder for code that handles the POST request
+            
+            function sendPost() {
+                // prepare POST request
+                let url = "";
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", url);
+
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        console.log(xhr.responseText);
+                    }
+                }
+
+                //parse form
+
+                let dataId = document.getElementById("formDataId");
+                let dataFile = document.getElementById("formDataFile");
+
+                let data = {
+                    data_Id : dataId,
+                    data_File : dataFile
+                }
+
+                // send the data
+                xhr.send(JSON.stringify(data));
+            }
+
         </script>
 
     </head>
@@ -46,6 +76,7 @@
             <br>
             <label for="dataFile">Data File (a text line for testing purposes)</label><br>
             <input type="text" id="formDataFile" name="dataFile"><br>
+            <button onclick="sendPost()">Submit</button>
 
         </div>
 

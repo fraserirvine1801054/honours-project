@@ -123,6 +123,12 @@ insertDataRouter.get('/insertdata', (req,res) => {
 
 });
 
+insertDataRouter.post('/insertdata', (req,res) => {
+
+    console.log(req.body);
+
+});
+
 app.listen(PORT);
 console.log('Express server running at http://127.0.0.1:'.PORT);
 
