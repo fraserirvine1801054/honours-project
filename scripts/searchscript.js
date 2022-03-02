@@ -40,144 +40,43 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                  * this will be needing a complete rewrite sometime in the future
                  */
 
-                switch (dataType) {
-                    case "CSV":
-                        for (let i = 0; i < apiRes.results.length; i++) {
+                /**
+                 * new code
+                 */
 
-                            //boolean to check if a CSV has been found in this package.
-                            let hasCSV;
+                for (let i = 0; i < apiRes.results.length; i++) {
+                    let hasFilteredType = dataType;
 
-                            //array to store datatypes found in the package
-                            let dataTypes = [];
+                    let dataTypes = [];
 
-                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
-                                //look through "resources" to see if a CSV exists
-                                if (apiRes.results[i].resources[j].format === "CSV") {
-                                    hasCSV = true;
-                                }
-                                let currentDataType = apiRes.results[i].resources[j].format;
+                    for (let j = 0; j < apiRes.results[i].resources.length; j++) {
+                        // look through "resources" to see if a CSV exists
+                        if (apiRes.results[i].resources[j].format === dataType) {
+                            hasFilteredType = true;
+                        }
+                        let currentDataType = apiRes.results[i].resources[j].format;
 
-                                //replacing empty formats with "undefined"
-                                if (currentDataType === "") {
-                                    currentDataType = "undefined";
-                                }
+                        // replacing empty formats with "undefined"
 
-                                //boolean flag to check if a duplicate exists
-                                let isDuplicate = false;
+                        if (currentDataType === "") {
+                            currentDataType = "undefined";
+                        }
 
-                                for (let item of dataTypes) {
-                                    if (currentDataType == item) {
-                                        isDuplicate = true;
-                                    }
-                                }
+                        // boolean flag to check if duplicate file types exist
 
-                                if (!isDuplicate) {
-                                    dataTypes.push(currentDataType);
-                                }
-                            }
+                        let isDuplicate = false;
 
-                            if (hasCSV) {
-                                let myObj = {
-                                    "title": `Title: ${apiRes.results[i].title}`,
-                                    "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
-                                    "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
-                                    "licence": `Licence: ${apiRes.results[i].license_title}`,
-                                    "data_type": `Data Types: ${dataTypes.join(", ")}`,
-                                    "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
-                                    "package_id": apiRes.results[i].id
-                                };
-                                results.push(myObj);
+                        for (let item of dataTypes) {
+                            if (currentDataType == item) {
+                                isDuplicate = true;
                             }
                         }
-                        break;
-                    case "GEO":
-                        
-                        /**
-                         * Geographical data is formatted very strangely in data.gov.uk API
-                         * it will be ignored for the proof of concept
-                         */
 
-                        break;
-                    case "ESRIREST":
-                        
-                        for (let i = 0; i < apiRes.results.length; i++) {
-
-                            //boolean to check if a CSV has been found in this package.
-                            let hasESRIREST;
-
-                            //array to store datatypes found in the package
-                            let dataTypes = [];
-
-                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
-                                //look through "resources" to see if a CSV exists
-                                if (apiRes.results[i].resources[j].format === "Esri REST") {
-                                    hasESRIREST = true;
-                                }
-                                let currentDataType = apiRes.results[i].resources[j].format;
-
-                                //replacing empty formats with "undefined"
-                                if (currentDataType === "") {
-                                    currentDataType = "undefined";
-                                }
-
-                                //boolean flag to check if a duplicate exists
-                                let isDuplicate = false;
-
-                                for (let item of dataTypes) {
-                                    if (currentDataType == item) {
-                                        isDuplicate = true;
-                                    }
-                                }
-
-                                if (!isDuplicate) {
-                                    dataTypes.push(currentDataType);
-                                }
-                            }
-
-                            if (hasESRIREST) {
-                                let myObj = {
-                                    "title": `Title: ${apiRes.results[i].title}`,
-                                    "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
-                                    "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
-                                    "licence": `Licence: ${apiRes.results[i].license_title}`,
-                                    "data_type": `Data Types: ${dataTypes.join(", ")}`,
-                                    "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
-                                    "package_id": apiRes.results[i].id
-                                };
-                                results.push(myObj);
-                            }
+                        if (!isDuplicate) {
+                            dataTypes.push(currentDataType);
                         }
-                        
-                        break;
-                    case "ALL":
-                        for (let i = 0; i < apiRes.results.length; i++) {
 
-                            //array to store data types found in this dataset
-                            let dataTypes = [];
-
-                            for (let j = 0; j < apiRes.results[i].resources.length; j++) {
-
-                                let currentDataType = apiRes.results[i].resources[j].format;
-
-                                //replacing empty formats with "undefined"
-                                if (currentDataType === "") {
-                                    currentDataType = "undefined";
-                                }
-
-                                //boolean flag to check if a duplicate element exists
-                                let isDuplicate = false;
-
-                                for (let item of dataTypes) {
-                                    if (currentDataType == item) {
-                                        isDuplicate = true;
-                                    }
-                                }
-
-                                if (!isDuplicate) {
-                                    dataTypes.push(currentDataType);
-                                }
-
-                            }
+                        if (hasFilteredType) {
                             let myObj = {
                                 "title": `Title: ${apiRes.results[i].title}`,
                                 "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
@@ -189,12 +88,9 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                             };
                             results.push(myObj);
                         }
-                        break;
+                    }
                 }
-
                 //res.render('index.ejs', {results : results});
-
-
                 console.log("makesearch results return")
                 //return results;
                 resolve(results);
