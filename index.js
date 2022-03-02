@@ -31,20 +31,6 @@ app.get('/', function(req,res){
     res.render('index.ejs', {results : results});
 });
 
-/*
-old GET Query code:
-
-app.get('/search', function(req,res){javascript run function from another file
-    var queryKeywords = req.query.searchTerms;
-    var queryDataType = req.query.dataType
-    //debug
-    console.log("DEBUG:\n" + 
-                "SearchTerms: " + queryKeywords + "\n" +
-                "dataType: " + queryDataType
-    );
-});
-*/
-
 const searchRouter = express.Router();
 
 app.use(searchRouter);
@@ -84,7 +70,6 @@ searchRouter.get('/search', function(req,res){
     );
 
 });
-
 
 const packageViewRouter = express.Router();
 
