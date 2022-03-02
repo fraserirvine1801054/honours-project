@@ -18,7 +18,6 @@ const dataSchema = new mongoose.Schema({
 
 });
 
-
 const dataModel = mongoose.model('', dataSchema);
 dataModel.createIndexes();
 

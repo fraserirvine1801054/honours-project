@@ -16,7 +16,5 @@ function writeDb(jsonString) {
             .then(() => client.close());
 
     });
-
-
 }
 exports.writeDb = writeDb;
