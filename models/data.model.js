@@ -1,7 +1,8 @@
 /**
  * defining a Schema for sending to mongo atlas
+ * 
+ * currently doesn't do anything
  */
-
 import mongoose from 'mongoose';
 
 const dataSchema = new mongoose.Schema({

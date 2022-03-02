@@ -13,8 +13,6 @@ app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 8080;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-const port = PORT;
-
 //render the page in ejs
 app.get('/', function(req,res){
 
@@ -130,13 +128,14 @@ insertDataRouter.post('/insertdata', (req,res) => {
 
     console.log(`post test: ${req.body}`);
 
+    let mongocontrol = require("./scripts/mongocontrol");
 
-
+    mongocontrol.writeDb(req.body);
 
 });
 
 app.listen(PORT);
-console.log('Express server running at http://127.0.0.1:'.PORT);
+console.log(`Express server running at http://127.0.0.1:${PORT}`);
 
 /**
  * Resources used:
