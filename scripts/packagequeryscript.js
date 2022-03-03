@@ -21,6 +21,7 @@ function queryPackage(packageId) {
 
                 //parse package metadata into variables
                 let packageTitle = apiRes.title;
+                let packageId = apiRes.id;
                 let packageLicense = apiRes.license_title;
                 let packageCreationDate = apiRes.metadata_created.split("T")[0];
                 let packageModDate = apiRes.metadata_modified.split("T")[0];
@@ -29,6 +30,7 @@ function queryPackage(packageId) {
                 //"p_" stands for "package"
                 let packageMetaData = {
                     "p_title": packageTitle,
+                    "p_package_Id" : packageId,
                     "p_licence": packageLicense,
                     "p_date_created": packageCreationDate,
                     "p_date_modified": packageModDate

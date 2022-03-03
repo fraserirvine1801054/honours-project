@@ -114,6 +114,7 @@ insertDataRouter.get('/insertdata', (req,res) => {
 insertDataRouter.post('/insertdata', (req,res) => {
 
     console.log(`post test: ${req.body}`);
+    
 
     let mongocontrol = require("./scripts/mongocontrol");
 

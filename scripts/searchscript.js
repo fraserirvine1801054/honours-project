@@ -2,8 +2,15 @@
  * Gets called by index.js
  * 
  * returns a promise with json object
+ * 
+ * Current Problems:
+ * while the code below functions correctly.
+ * the order in which packages are returned are random
+ * Probable fix is to divide this into multiple async functions.
  */
 
+//const { data } = require('jquery');
+const mongocontrol = require("./mongocontrol")
 
 function makeSearch(searchTerms, dataType, rowStart, rowCount) {
 
@@ -11,14 +18,7 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
         //storing the api response
         let apiResponse;
 
-        //initialising empty json object to be displayed to the main page
-        let results = [];
-
         /**
-         * upon looking at CKAN's documentation, I don't think this is how the API request is supposed to work.
-         * this will be a placeholder way until I can figure that out.
-         * 
-         * UPDATE:
          * the parameters for showing more than 10 results in json is the "start" and "rows" parameter
          * Link: https://solr.apache.org/guide/7_6/common-query-parameters.html
          */
@@ -36,82 +36,96 @@ function makeSearch(searchTerms, dataType, rowStart, rowCount) {
                 //shorten "apiResponse.result" into "apiRes"
                 let apiRes = apiResponse.result;
 
-                for (let i = 0; i < apiRes.results.length; i++) {
-                    let hasFilteredType = dataType;
+                const loopPromise = new Promise((resolve, reject) => {
+                    //initialising empty json object to be displayed to the main page
+                    let results = [];
 
-                    let dataTypes = [];
+                    let objCreated = 0;
 
-                    for (let j = 0; j < apiRes.results[i].resources.length; j++) {
-                        // look through "resources" to see if a CSV exists
-                        if (apiRes.results[i].resources[j].format === dataType) {
-                            hasFilteredType = true;
-                        }
-                        let currentDataType = apiRes.results[i].resources[j].format;
+                    for (let i = 0; i < apiRes.results.length; i++) {
 
-                        // replacing empty formats with "undefined"
+                        let hasFilteredType = false;
 
-                        if (currentDataType === "") {
-                            currentDataType = "undefined";
-                        }
+                        let dataTypes = [];
 
-                        // boolean flag to check if duplicate file types exist
+                        // parsing API return for datatypes within package
+                        for (let j = 0; j < apiRes.results[i].resources.length; j++) {
 
-                        let isDuplicate = false;
+                            // look through "resources" to see if the filtered datatype exists
+                            let currentDataType = apiRes.results[i].resources[j].format;
 
-                        for (let item of dataTypes) {
-                            if (currentDataType == item) {
-                                isDuplicate = true;
+                            // replacing empty formats with "undefined"
+                            if (currentDataType === "") {
+                                currentDataType = "undefined";
+                            }
+
+                            if (currentDataType === dataType) {
+                                hasFilteredType = true;
+                            } else if (dataType === "ALL") {
+                                hasFilteredType = true;
+                            }
+
+                            // boolean flag to check if duplicate file types exist
+
+                            let isDuplicate = false;
+
+                            for (let item of dataTypes) {
+                                if (currentDataType === item) {
+                                    isDuplicate = true;
+                                }
+                            }
+
+                            if (!isDuplicate) {
+                                dataTypes.push(currentDataType);
                             }
                         }
 
-                        if (!isDuplicate) {
-                            dataTypes.push(currentDataType);
-                        }
-
-                        //check for if package has entry on database.
-                        let mongocontrol = require("./mongocontrol");
-                        let dbQuery = mongocontrol.queryDbOnPackageSearch(apiRes.results[i].id);
-                        let packageHasDb = false;
-
-                        if (dbQuery === {}) {
-                            packageHasDb = false;
-                        } else {
-                            packageHasDb = true;
-                        }
-
-                        /**
-                         * roundabout way to display if the package has a db link or not
-                         */
-
-                        let hasDbText = "";
-
-                        if (packageHasDb) {
-                            hasDbText = "View this package (Visualisation available)";
-                        } else {
-                            hasDbText = "View this package";
-                        }
-
                         if (hasFilteredType) {
-                            let myObj = {
-                                "title": `Title: ${apiRes.results[i].title}`,
-                                "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
-                                "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
-                                "licence": `Licence: ${apiRes.results[i].license_title}`,
-                                "data_type": `Data Types: ${dataTypes.join(", ")}`,
-                                "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
-                                "package_id": apiRes.results[i].id,
-                                "package_hasdb": packageHasDb,
-                                "package_hasdb_text": hasDbText
-                            };
-                            results.push(myObj);
+                            //check for if package has entry on database.
+                            mongocontrol.queryDbOnPackageSearch(apiRes.results[i].id).then(cursor => {
+                                console.log(cursor);
+                                let packageHasDb = false;
+
+                                if (cursor.length != 0) {
+                                    packageHasDb = true;
+                                } else {
+                                    packageHasDb = false;
+                                }
+
+                                let hasDbText = "";
+                                if (packageHasDb) {
+                                    hasDbText = "View this package (Visualisation available)";
+                                } else {
+                                    hasDbText = "View this package";
+                                }
+
+                                console.log("creating search object")
+                                let myObj = {
+                                    "title": `Title: ${apiRes.results[i].title}`,
+                                    "date_created": `Date Created: ${apiRes.results[i].metadata_created}`,
+                                    "date_modified": `Last Modified: ${apiRes.results[i].metadata_modified}`,
+                                    "licence": `Licence: ${apiRes.results[i].license_title}`,
+                                    "data_type": `Data Types: ${dataTypes.join(", ")}`,
+                                    "resources": `Number of Resources: ${apiRes.results[i].resources.length}`,
+                                    "package_id": apiRes.results[i].id,
+                                    "package_hasdb": packageHasDb,
+                                    "package_hasdb_text": hasDbText
+                                };
+                                console.log("finished making search object")
+                                results.push(myObj);
+                                objCreated++
+                                if (objCreated === apiRes.results.length) {
+                                    resolve(results);
+                                }
+                            });
                         }
                     }
-                }
-                //res.render('index.ejs', {results : results});
-                console.log("makesearch results return")
+                });
                 //return results;
-                resolve(results);
-
+                loopPromise.then((resultsList) => {
+                    console.log("makesearch results return")
+                    resolve(resultsList);
+                });
             } else {
                 //console.log(`error ${request.status} ${request.statusText}`);
                 reject(`error ${request.status} ${request.statusText}`);

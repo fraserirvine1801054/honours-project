@@ -26,10 +26,12 @@
 
                 //parse form
 
+                let packageId = document.getElementById("formPackageId").value;
                 let dataId = document.getElementById("formDataId").value;
                 let dataFile = document.getElementById("formDataFile").value;
 
                 let data = {
+                    data_package_Id : packageId,
                     data_Id : dataId,
                     data_File : dataFile
                 }
