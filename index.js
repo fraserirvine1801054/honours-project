@@ -38,7 +38,7 @@ const searchRouter = express.Router();
 app.use(searchRouter);
 
 //recieve form data
-searchRouter.get('/search', async (req, res) => {
+searchRouter.get('/search', (req, res) => {
     console.log("search has been performed");
 
     let searchTerms = req.query.searchTerms;
@@ -61,12 +61,13 @@ searchRouter.get('/search', async (req, res) => {
 
     let searchScript = require("./scripts/searchscript");
 
-    async function search() {
-        let results = await searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount);
-        console.log(typeof results);
+
+    //let results = searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount);
+    searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount).then(results => {
+        console.log(results);
         res.render('index.ejs', { results: results });
-    }
-    await search();
+    })
+
 });
 
 const packageViewRouter = express.Router();

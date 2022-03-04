@@ -8,48 +8,64 @@
  * the order in which packages are returned are random
  * Probable fix is to divide this into multiple async functions.
  */
+
 const mongocontrol = require("./mongocontrol")
 
 async function makeSearch(searchTerms, dataType, rowStart, rowCount) {
     //storing the api response
-    let apiResponse;
+
+    let apiResponse = await getApiJson(searchTerms, rowStart, rowCount);
+ 
+    console.log("[debug] api response log in makesearch");
+    console.log(apiResponse);
+
+    //shorten "apiResponse.result" into "apiRes"
+    let apiRes = apiResponse.result;
+
+    let results = await getDisplayObject(apiRes, dataType);
+
+    console.log("makesearch results return");
+    return results;
+}
+
+async function getDisplayObject(apiRes, dataType) {
+    let results = [];
+
+    for (let i = 0; i < apiRes.results.length; i++) {
+        // parsing API return for datatypes within package
+        let dataTypeObject = await parseDataTypes(apiRes.results[i].resources, dataType);
+        let myObj = await getPackageObject(apiRes.results[i], dataTypeObject);
+        results.push(myObj);
+    }
+
+    return results;
+}
+
+function getApiJson(searchTerms, rowStart, rowCount) {
 
     /**
      * the parameters for showing more than 10 results in json is the "start" and "rows" parameter
      * Link: https://solr.apache.org/guide/7_6/common-query-parameters.html
      */
 
-    const XMLHttpRequest = require('xhr2');
-    let request = new XMLHttpRequest();
-    request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}&start=${rowStart}&rows=${rowCount}`);
-    request.send();
-    request.onload = async () => {
-        console.log(request);
-        if (request.status === 200) {
-            apiResponse = JSON.parse(request.response);
-            console.log(apiResponse);
-
-            //shorten "apiResponse.result" into "apiRes"
-            let apiRes = apiResponse.result;
-
-            //initialising empty json object to be displayed to the main page
-
-            let results = [];
-            for (let i = 0; i < apiRes.results.length; i++) {
-                // parsing API return for datatypes within package
-                let dataTypeObject = await parseDataTypes(apiRes.results[i].resources, dataType);
-                let myObj = await getPackageObject(apiRes.results[i], dataTypeObject);
-                results.push(myObj);                
+    return new Promise((resolve, reject) => {
+        const XMLHttpRequest = require('xhr2');
+        let request = new XMLHttpRequest();
+        request.open("GET", `https://data.gov.uk/api/action/package_search?q=${searchTerms}&start=${rowStart}&rows=${rowCount}`);
+        request.send();
+        request.onload = () => {
+            console.log("[debug] request log in getApiJson");
+            console.log(request);
+            if (request.status === 200) {
+                let apiResponse = JSON.parse(request.response);
+                console.log(apiResponse);
+                resolve(apiResponse);
+            } else {
+                console.log(`error ${request.status} ${request.statusText}`);
+                reject(`error ${request.status} ${request.statusText}`);
             }
-
-            console.log("makesearch results return");
-            return Promise.resolve(results);
-
-        } else {
-            console.log(`error ${request.status} ${request.statusText}`);
-            //reject(`error ${request.status} ${request.statusText}`);
         }
-    }
+    });
 }
 
 async function parseDataTypes(theJson, dataType) {
