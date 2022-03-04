@@ -35,7 +35,7 @@ async function queryDbOnPackageSearch(condition) {
     
     client.close();
 
-    return cursor;
+    return Promise.resolve(cursor);
 }
 exports.writeDb = writeDb;
 exports.queryDbOnPackageSearch = queryDbOnPackageSearch;

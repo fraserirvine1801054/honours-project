@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { json } = require('body-parser');
 const router = express.Router();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.set('view engine', 'ejs');
@@ -14,23 +14,23 @@ const PORT = process.env.PORT || 8080;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 //render the page in ejs
-app.get('/', function(req,res){
+app.get('/', function (req, res) {
 
     //roundabout way to render the main page with empty results
     let results = [
         {
-            "title" : "",
-            "date_created" : "",
-            "date_modified" : "",
-            "licence" : "",
-            "data_type" : "",
-            "resources" : "",
-            "package_id" : "",
+            "title": "",
+            "date_created": "",
+            "date_modified": "",
+            "licence": "",
+            "data_type": "",
+            "resources": "",
+            "package_id": "",
             "package_hasdb": false,
             "package_hasdb_text": ""
         }
     ];
-    res.render('index.ejs', {results : results});
+    res.render('index.ejs', { results: results });
 });
 
 const searchRouter = express.Router();
@@ -38,39 +38,35 @@ const searchRouter = express.Router();
 app.use(searchRouter);
 
 //recieve form data
-searchRouter.get('/search', function(req,res){
+searchRouter.get('/search', async (req, res) => {
     console.log("search has been performed");
-    //console.log(req.body);
-    
+
     let searchTerms = req.query.searchTerms;
     let dataType = req.query.dataType;
     let rowStart = req.query.rowStart;
     let rowCount = req.query.rowCount;
 
-    //reformat inputs from rowStart
-    if (rowStart == ''){
+    //convert empty parameters to default numbers
+    if (rowStart == '') {
         rowStart = 0;
     } else {
         rowStart = parseInt(rowStart);
     }
-    
-    //reformat inputs from rowCount
-    if (rowCount == ''){
+
+    if (rowCount == '') {
         rowCount = 10;
     } else {
         rowCount = parseInt(rowCount);
     }
 
-
-    //var results = await searchScript.makeSearch(searchTerms,dataType,rowStart,rowCount);
     let searchScript = require("./scripts/searchscript");
-    
-    searchScript.makeSearch(searchTerms,dataType,rowStart,rowCount).then(
-        results => {
-            res.render('index.ejs', {results : results});
-        }
-    );
 
+    async function search() {
+        let results = await searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount);
+        console.log(typeof results);
+        res.render('index.ejs', { results: results });
+    }
+    await search();
 });
 
 const packageViewRouter = express.Router();
@@ -78,7 +74,7 @@ const packageViewRouter = express.Router();
 app.use(packageViewRouter);
 
 //redirect to package view page
-packageViewRouter.get('/packageview', (req,res) => {
+packageViewRouter.get('/packageview', (req, res) => {
 
     //test page render
     console.log("test package view load");
@@ -86,8 +82,8 @@ packageViewRouter.get('/packageview', (req,res) => {
 
 });
 
-packageViewRouter.get('/packageview/:packageid', (req,res) => {
-    
+packageViewRouter.get('/packageview/:packageid', (req, res) => {
+
     //Debug message for console
     console.log("test package view with params");
     console.log(`The parameter is: ${req.params.packageid}`);
@@ -96,7 +92,7 @@ packageViewRouter.get('/packageview/:packageid', (req,res) => {
 
     packageQueryScript.queryPackage(req.params.packageid).then(
         packageObj => {
-            res.render('packageview.ejs', {packageObj : packageObj});
+            res.render('packageview.ejs', { packageObj: packageObj });
         }
     );
 });
@@ -105,16 +101,16 @@ const insertDataRouter = express.Router();
 
 app.use(insertDataRouter);
 
-insertDataRouter.get('/insertdata', (req,res) => {
+insertDataRouter.get('/insertdata', (req, res) => {
 
     res.render('insertdataview.ejs');
 
 });
 
-insertDataRouter.post('/insertdata', (req,res) => {
+insertDataRouter.post('/insertdata', (req, res) => {
 
     console.log(`post test: ${req.body}`);
-    
+
 
     let mongocontrol = require("./scripts/mongocontrol");
 
