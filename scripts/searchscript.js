@@ -2,11 +2,6 @@
  * Gets called by index.js
  * 
  * returns a promise with json object
- * 
- * Current Problems:
- * while the code below functions correctly.
- * the order in which packages are returned are random
- * Probable fix is to divide this into multiple async functions.
  */
 
 const mongocontrol = require("./mongocontrol")
