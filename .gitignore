@@ -1,2 +1,4 @@
 node_modules/
 start.sh
+#tools/csv-json-converter/target/debug/build/
+#tools/csv-json-converter/target/debug/deps/

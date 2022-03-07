@@ -132,4 +132,7 @@ console.log(`Express server running at http://127.0.0.1:${PORT}`);
  *
  * https://campusmoodle.rgu.ac.uk/pluginfile.php/5760308/mod_resource/content/2/GettingStarted.pdf
  * 
+ * Charting libraries:
+ * https://apexcharts.com/
+ * 
  */
