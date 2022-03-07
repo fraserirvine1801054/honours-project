@@ -1,5 +1,5 @@
 node_modules/
 start.sh
-#tools/csv-json-converter/target/debug/build/
-#tools/csv-json-converter/target/debug/deps/
-#tools/csv-json-converter/target/rls/
+tools/csv-json-converter/target/debug/build/
+tools/csv-json-converter/target/debug/deps/
+tools/csv-json-converter/target/rls/
