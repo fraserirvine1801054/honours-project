@@ -7,7 +7,7 @@ use serde::{Serialize, Deserialize};
 
 //use serde_json::{json, Map, Value};
 
-///make structs
+//make structs
 
 #[derive (Serialize, Deserialize)]
 struct DataSet {
@@ -26,6 +26,11 @@ fn main() {
     //make separator
     println!("===============");
 
+    //print description
+    println!("This tool is made to convert CSV files into JSON files.");
+    println!("This tool is not designed to interact with the web app");
+
+
     //get command line arguments
 
     // Resource used:
@@ -34,7 +39,11 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     println!("{:?}", args);
 
+    // args[1] the file name
+    // args[2] the destination path (must incude file extension)
+
     let file_path = &args[1];
+    let destination_path = &args[2];
 
     let csv_line_vector:Vec<String> = get_csv_lines(file_path);
 
@@ -43,17 +52,17 @@ fn main() {
     let json_string = generate_json(columns);
 
     //write json to file
-    write_json_to_file(json_string);
+    write_json_to_file(json_string, destination_path.to_owned());
 
 }
 
-fn write_json_to_file(json_string:String) {
-    fs::write("data.json", &json_string).expect("Unable to write file");
+fn write_json_to_file(json_string:String, destination:String) {
+    fs::write(destination, json_string).expect("Unable to write file or file extension is not specified");
 }
 
-/// generate the json from a 2d Vector of columns
-/// resource used:
-/// https://youtu.be/NwYY00paiH0
+// generate the json from a 2d Vector of columns
+// resource used:
+// https://youtu.be/NwYY00paiH0
 
 fn generate_json(columns: Vec<Vec<String>>) -> String {
 
@@ -81,7 +90,7 @@ fn generate_json(columns: Vec<Vec<String>>) -> String {
     return json;
 }
 
-///read the file and return a Vector of individual lines.
+//read the file and return a Vector of individual lines.
 
 fn get_csv_lines(path: &String) -> Vec<String> {
     let file = File::open(&path).expect("unable to open file");
@@ -97,7 +106,7 @@ fn get_csv_lines(path: &String) -> Vec<String> {
     return line_vec;
 }
 
-/// split and arrange into columns
+// split and arrange into columns
 
 fn build_columns(line_vector:Vec<String>) -> Vec<Vec<String>> {
     
