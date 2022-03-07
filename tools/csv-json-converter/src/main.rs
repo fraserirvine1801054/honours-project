@@ -3,6 +3,7 @@ use std::env;
 use std::fs::{File};
 use std::str;
 use std::io::{self, prelude::*, BufReader};
+use serde::Serialize;
 
 use serde_json::{json, Map, Value};
 
@@ -26,14 +27,37 @@ fn main() {
 
     let columns:Vec<Vec<String>> = build_columns(csv_line_vector);
 
+    let json_string = generate_json(columns);
+
+    //write json to file
+    write_json_to_file(json_string);
 
 }
 
+fn write_json_to_file(json_string:Result<String, E>) {
+    serde_json::to_writer_pretty(&File::create("data.json"), &json_string);
+}
+
 /// generate the json from a 2d Vector of columns
+/// resource used:
+/// https://youtu.be/NwYY00paiH0
 
-fn generate_json(columns: Vec<Vec<String>>) {
+fn generate_json(columns: Vec<Vec<String>>) -> serde_json::Result<String> {
 
-    let mut obj = json!();
+    let mut map_value = serde_json::Map::new();
+
+    //let num_columns = columns.len();
+
+    for mut column in columns {
+        // get the first value of the column for the field name
+        let field_name = &column[0];
+        //remove first element from column;
+        let reformatted_column = column.remove(0);
+        //insert into map
+        map_value.insert(field_name.to_owned(), reformatted_column.to_owned().parse().unwrap());
+    }
+
+    return serde_json::to_string_pretty(&map_value);
 
 }
 
