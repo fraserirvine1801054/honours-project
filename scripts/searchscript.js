@@ -20,7 +20,25 @@ async function makeSearch(searchTerms, dataType, rowStart, rowCount) {
     let results = await getDisplayObject(apiRes, dataType);
 
     console.log("makesearch results return");
+
+    console.log("removing empty/ undefined entries");
+    results = fixArray(results);
+
     return results;
+}
+
+
+/**
+ * fixes the results array by removing problematic elements such as undefined
+ * @param {*} resultsArray 
+ */
+function fixArray(resultsArray) {
+
+    let fixedArray = resultsArray.filter(element => {
+        return element !== undefined;
+    });
+
+    return fixedArray;
 }
 
 async function getDisplayObject(apiRes, dataType) {

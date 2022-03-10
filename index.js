@@ -119,6 +119,20 @@ insertDataRouter.post('/insertdata', (req, res) => {
 
 });
 
+const visDataRouter = express.Router();
+
+app.use(visDataRouter);
+
+visDataRouter.get('/visualise/:dataid', (req,res) => {
+    
+    //currently only supports two column charts.
+
+    let dataId = req.params.dataid;
+
+
+
+});
+
 app.listen(PORT);
 console.log(`Express server running at http://127.0.0.1:${PORT}`);
 
@@ -135,4 +149,6 @@ console.log(`Express server running at http://127.0.0.1:${PORT}`);
  * Charting libraries:
  * https://apexcharts.com/
  * 
+ * Pinned datasets:
+ * https://data.gov.uk/dataset/da9a88d6-6535-4c7f-8d54-a93a50b2f177/the-national-archives-energy-consumption
  */
