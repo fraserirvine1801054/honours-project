@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            html {
-                font-family: sans-serif;
-            }
-        </style>
 
+<head>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+    </style>
 
-    </head>
-    <body>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-        <h2>
-            Visualisation for:     
-        </h2>
+    <script>
+        let options = '<%= fullVisObj.options %>'
 
-    </body>
+        let chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        chart.render();
+    </script>
+
+</head>
+
+<body>
+
+    <h2>Visualisation for: <%= fullVisObj.visObj.vis_title %>
+    </h2>
+
+    <div id="chart">
+    </div>
+
+</body>
+
 </html>

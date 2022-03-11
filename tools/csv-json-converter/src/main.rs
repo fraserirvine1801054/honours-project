@@ -41,19 +41,29 @@ fn main() {
 
     // args[1] the file name
     // args[2] the destination path (must incude file extension)
+    // args[3] boolean to make json "pretty" or not
+    //  0: not pretty, 1: pretty
 
     let file_path = &args[1];
     let destination_path = &args[2];
+    let output_method = &args[3].parse::<i32>().unwrap();
 
     let csv_line_vector:Vec<String> = get_csv_lines(file_path);
 
     let columns:Vec<Vec<String>> = build_columns(csv_line_vector);
 
-    let json_string = generate_json(columns);
+    let make_pretty;
+
+    if *output_method == 0 {
+        make_pretty = false;
+    } else {
+        make_pretty = true;
+    }
+
+    let json_string = generate_json(columns,make_pretty);
 
     //write json to file
     write_json_to_file(json_string, destination_path.to_owned());
-
 }
 
 fn write_json_to_file(json_string:String, destination:String) {
@@ -64,7 +74,7 @@ fn write_json_to_file(json_string:String, destination:String) {
 // resource used:
 // https://youtu.be/NwYY00paiH0
 
-fn generate_json(columns: Vec<Vec<String>>) -> String {
+fn generate_json(columns: Vec<Vec<String>>, make_pretty: bool) -> String {
 
     let mut formatted_columns = vec![];
 
@@ -85,8 +95,14 @@ fn generate_json(columns: Vec<Vec<String>>) -> String {
         data: formatted_columns
     };
 
+    let json;
 
-    let json = serde_json::to_string_pretty(&data_set).expect("unable to create json");
+    if make_pretty {
+        json = serde_json::to_string_pretty(&data_set).expect("unable to create json");
+    } else {
+        json = serde_json::to_string(&data_set).expect("unable to create json");
+    }
+
     return json;
 }
 
