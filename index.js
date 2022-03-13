@@ -5,6 +5,16 @@ const bodyParser = require('body-parser');
 const { json } = require('body-parser');
 const router = express.Router();
 
+import React from 'react';
+import reactDom from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
+import ServerStyleSheets from '@mui/material/styles';
+
+import Template from './template';
+import { fontFamily } from '@mui/system';
+import Visualisation from './react-components/visualisation';
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -125,62 +135,22 @@ app.use(visDataRouter);
 
 visDataRouter.get('/visualise/:dataid', (req, res) => {
 
-    //currently only supports two column charts.
+    let data_id = req.dataid;
 
-    let dataId = req.params.dataid;
-
+    let css = `
+    `;
 
     
 
+    const markup = ReactDOMServer.renderToString(
+        <Visualisation description="test desc" />
+    );
+    
 
-    let prepareChartScript = require("./scripts/preparechartscript");
-
-
-    prepareChartScript.getChartData(dataId, 0, 1).then(visObj => {
-        
-        var options = {
-            series: [{
-              name: "Desktops",
-              data: visObj.vis_y_axis
-          }],
-            chart: {
-            height: 350,
-            type: 'line',
-            zoom: {
-              enabled: false
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            curve: 'straight'
-          },
-          title: {
-            text: visObj.vis_title,
-            align: 'left'
-          },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-              opacity: 0.5
-            },
-          },
-          xaxis: {
-            categories: visObj.vis_x_axis,
-          }
-          };
-
-        let fullVisObj = {
-            visObj: visObj,
-            options: options
-        }
-        
-        res.render('visualisation.ejs', { fullVisObj: fullVisObj });
-    });
-
-
-    //prepareChartScript.getChartData(dataId,0,1);
+    res.status(200).send(Template({
+        markup: markup,
+        css: css
+    }));
 
 });
 
