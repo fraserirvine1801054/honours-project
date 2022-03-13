@@ -6,7 +6,7 @@
 
 const mongocontrol = require("./mongocontrol")
 
-async function makeSearch(searchTerms, dataType, rowStart, rowCount) {
+export default async function makeSearch(searchTerms, dataType, rowStart, rowCount) {
     //storing the api response
 
     let apiResponse = await getApiJson(searchTerms, rowStart, rowCount);
@@ -157,4 +157,3 @@ async function getPackageObject(apiObject, dataTypeObject) {
 
     }
 }
-exports.makeSearch = makeSearch;

@@ -3,7 +3,7 @@
  * 
  * returns a promise with json object
  */
-function queryPackage(packageId) {
+export default function queryPackage(packageId) {
 
     return new Promise((resolve, reject) => {
         const XMLHttpRequest = require('xhr2');
@@ -81,4 +81,3 @@ function queryPackage(packageId) {
         }
     });
 }
-exports.queryPackage = queryPackage;

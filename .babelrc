@@ -1,3 +1,15 @@
 {
-    "presets": ["@babel/env", "@babel/preset-react"]
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "current"
+                },
+                "useBuildIns": "entry"
+            }
+        
+        ],
+        "@babel/preset-react"
+    ]
 }

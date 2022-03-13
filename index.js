@@ -1,3 +1,6 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 //new code using express
 const express = require('express');
 const app = express();
@@ -8,12 +11,15 @@ const router = express.Router();
 import React from 'react';
 import reactDom from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import ServerStyleSheets from '@mui/material/styles';
 
 import Template from './template';
-import { fontFamily } from '@mui/system';
 import Visualisation from './react-components/visualisation';
 
+//esm imports 
+import getChartData from './scripts/preparechartscript';
+import { writeDb } from './scripts/mongocontrol';
+import makeSearch from './scripts/searchscript';
+import queryPackage from './scripts/packagequeryscript';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -69,11 +75,8 @@ searchRouter.get('/search', (req, res) => {
         rowCount = parseInt(rowCount);
     }
 
-    let searchScript = require("./scripts/searchscript");
-
-
     //let results = searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount);
-    searchScript.makeSearch(searchTerms, dataType, rowStart, rowCount).then(results => {
+    makeSearch(searchTerms, dataType, rowStart, rowCount).then(results => {
         console.log(results);
         res.render('index.ejs', { results: results });
     })
@@ -99,9 +102,7 @@ packageViewRouter.get('/packageview/:packageid', (req, res) => {
     console.log("test package view with params");
     console.log(`The parameter is: ${req.params.packageid}`);
 
-    let packageQueryScript = require("./scripts/packagequeryscript");
-
-    packageQueryScript.queryPackage(req.params.packageid).then(
+    queryPackage(req.params.packageid).then(
         packageObj => {
             res.render('packageview.ejs', { packageObj: packageObj });
         }
@@ -123,9 +124,7 @@ insertDataRouter.post('/insertdata', (req, res) => {
     console.log(`post test: ${req.body}`);
 
 
-    let mongocontrol = require("./scripts/mongocontrol");
-
-    mongocontrol.writeDb(req.body);
+    writeDb(req.body);
 
 });
 
@@ -135,22 +134,42 @@ app.use(visDataRouter);
 
 visDataRouter.get('/visualise/:dataid', (req, res) => {
 
-    let data_id = req.dataid;
+    let data_id = req.params.dataid;
 
-    let css = `
-    `;
 
-    
 
-    const markup = ReactDOMServer.renderToString(
-        <Visualisation description="test desc" />
-    );
-    
 
-    res.status(200).send(Template({
-        markup: markup,
-        css: css
-    }));
+
+
+
+
+    getChartData(data_id, 0, 1).then(visObj => {
+        console.log("degbugging vis obj");
+        console.log(visObj);
+        let css = `
+        `;
+
+        const markup = ReactDOMServer.renderToString(
+            <Visualisation
+                description="test desc"
+                xData={visObj.vis_x_axis}
+                yData={visObj.vis_y_axis}
+
+            />
+        );
+
+        res.status(200).send(Template({
+            markup: markup,
+            css: css
+        }));
+
+    });
+
+
+
+
+
+
 
 });
 

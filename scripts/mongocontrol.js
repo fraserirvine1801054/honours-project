@@ -2,7 +2,7 @@
  * gets called by index.js
  */
 
-function writeDb(jsonString) {
+export function writeDb(jsonString) {
 
     const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -17,7 +17,7 @@ function writeDb(jsonString) {
     });
 }
 
-async function queryDbOnPackageSearch(condition) {
+export async function queryDbOnPackageSearch(condition) {
 
     /**
      * this code is different compared to default mongodb code
@@ -38,7 +38,7 @@ async function queryDbOnPackageSearch(condition) {
     return Promise.resolve(cursor);
 }
 
-async function queryDbOnVisualisation(condition) {
+export async function queryDbOnVisualisation(condition) {
 
     const MONGODB_URI = process.env.MONGODB_URI;
     const query = { data_Id: condition };
@@ -53,6 +53,3 @@ async function queryDbOnVisualisation(condition) {
     return Promise.resolve(cursor);
 
 }
-exports.writeDb = writeDb;
-exports.queryDbOnPackageSearch = queryDbOnPackageSearch;
-exports.queryDbOnVisualisation = queryDbOnVisualisation;

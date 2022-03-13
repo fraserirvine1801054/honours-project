@@ -1,13 +1,14 @@
-const mongocontrol = require('./mongocontrol');
+import { queryDbOnVisualisation } from './mongocontrol';
 
-async function getChartData(dataId, xColumn, yColumn) {
+export default async function getChartData(dataId, xColumn, yColumn) {
     //get the document json object
+    console.log("test getchartdata called");
     let mongoJson = await getDocument(dataId);
-
-    console.log(mongoJson[0]);
-    
+    console.log("getdocument call");
+    console.log(mongoJson);
+    console.log("mongolist called");
     let visObject = await buildObject(mongoJson[0],xColumn,yColumn);
-
+    console.log("visobject call");
     return visObject
 }
 
@@ -16,7 +17,7 @@ async function getChartData(dataId, xColumn, yColumn) {
  * @param {*} rawJson 
  */
 async function buildObject(rawJson,xColumn,yColumn){
-
+    console.log("buildobj call");
     let myObj = {
         "vis_title" : rawJson.data_description,
         "vis_x_axis_title" : rawJson.data[xColumn].field_name,
@@ -31,9 +32,8 @@ async function buildObject(rawJson,xColumn,yColumn){
 
 async function getDocument(dataId){
     //get the cursor from mongodb query
-    let cursor = await mongocontrol.queryDbOnVisualisation(dataId);
+    console.log("before cursor call");
+    let cursor = await queryDbOnVisualisation(dataId);
 
     return cursor;
 }
-
-exports.getChartData = getChartData;
