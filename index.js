@@ -2,11 +2,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 //new code using express
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const { json } = require('body-parser');
-const router = express.Router();
+import express from 'express';
+import bodyParser from 'body-parser';
+//import { json } from 'body-parser';
+import { Router } from 'express';
 
 import React from 'react';
 import reactDom from 'react-dom';
@@ -21,16 +20,23 @@ import { writeDb } from './scripts/mongocontrol';
 import makeSearch from './scripts/searchscript';
 import queryPackage from './scripts/packagequeryscript';
 
+// set app
+const app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+
+const router = Router();
+
+app.use(router);
 
 app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 8080;
-const MONGODB_URI = process.env.MONGODB_URI;
+//const MONGODB_URI = process.env.MONGODB_URI;
 
 //render the page in ejs
-app.get('/', function (req, res) {
+router.get('/', function (req, res) {
 
     //roundabout way to render the main page with empty results
     let results = [
@@ -49,12 +55,8 @@ app.get('/', function (req, res) {
     res.render('index.ejs', { results: results });
 });
 
-const searchRouter = express.Router();
-
-app.use(searchRouter);
-
 //recieve form data
-searchRouter.get('/search', (req, res) => {
+router.get('/search', (req, res) => {
     console.log("search has been performed");
 
     let searchTerms = req.query.searchTerms;
@@ -83,12 +85,8 @@ searchRouter.get('/search', (req, res) => {
 
 });
 
-const packageViewRouter = express.Router();
-
-app.use(packageViewRouter);
-
 //redirect to package view page
-packageViewRouter.get('/packageview', (req, res) => {
+router.get('/packageview', (req, res) => {
 
     //test page render
     console.log("test package view load");
@@ -96,7 +94,7 @@ packageViewRouter.get('/packageview', (req, res) => {
 
 });
 
-packageViewRouter.get('/packageview/:packageid', (req, res) => {
+router.get('/packageview/:packageid', (req, res) => {
 
     //Debug message for console
     console.log("test package view with params");
@@ -109,17 +107,13 @@ packageViewRouter.get('/packageview/:packageid', (req, res) => {
     );
 });
 
-const insertDataRouter = express.Router();
-
-app.use(insertDataRouter);
-
-insertDataRouter.get('/insertdata', (req, res) => {
+router.get('/insertdata', (req, res) => {
 
     res.render('insertdataview.ejs');
 
 });
 
-insertDataRouter.post('/insertdata', (req, res) => {
+router.post('/insertdata', (req, res) => {
 
     console.log(`post test: ${req.body}`);
 
@@ -128,33 +122,21 @@ insertDataRouter.post('/insertdata', (req, res) => {
 
 });
 
-const visDataRouter = express.Router();
-
-app.use(visDataRouter);
-
-visDataRouter.get('/visualise/:dataid', (req, res) => {
+router.get('/visualise/:dataid', (req, res) => {
 
     let data_id = req.params.dataid;
-
-
-
-
-
-
 
 
     getChartData(data_id, 0, 1).then(visObj => {
         console.log("degbugging vis obj");
         console.log(visObj);
-        let css = `
-        `;
+        let css = ``;
 
         const markup = ReactDOMServer.renderToString(
             <Visualisation
                 description="test desc"
                 xData={visObj.vis_x_axis}
                 yData={visObj.vis_y_axis}
-
             />
         );
 
@@ -162,15 +144,7 @@ visDataRouter.get('/visualise/:dataid', (req, res) => {
             markup: markup,
             css: css
         }));
-
     });
-
-
-
-
-
-
-
 });
 
 app.listen(PORT);
