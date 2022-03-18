@@ -6,19 +6,21 @@ import express from 'express';
 import bodyParser from 'body-parser';
 //import { json } from 'body-parser';
 import { Router } from 'express';
+import path from 'path';
+import devBundle from './devBundle';
 
 import React from 'react';
 import reactDom from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
-import Template from './template';
-import Visualisation from './react-components/visualisation';
+import Template from '../template';
+import Visualisation from '../react-components/visualisation';
 
 //esm imports 
-import getChartData from './scripts/preparechartscript';
-import { writeDb } from './scripts/mongocontrol';
-import makeSearch from './scripts/searchscript';
-import queryPackage from './scripts/packagequeryscript';
+import getChartData from '../scripts/preparechartscript';
+import { writeDb } from '../scripts/mongocontrol';
+import makeSearch from '../scripts/searchscript';
+import queryPackage from '../scripts/packagequeryscript';
 
 // set app
 const app = express();
@@ -31,6 +33,11 @@ const router = Router();
 app.use(router);
 
 app.set('view engine', 'ejs');
+
+const CURRENT_WORKING_DIR = process.cwd();
+
+app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
+devBundle.compile(app);
 
 const PORT = process.env.PORT || 8080;
 //const MONGODB_URI = process.env.MONGODB_URI;
