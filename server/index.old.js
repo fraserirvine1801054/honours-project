@@ -8,39 +8,72 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import path from 'path';
 import devBundle from './devBundle';
-
-import React from 'react';
-import reactDom from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
+import helmet, { contentSecurityPolicy } from 'helmet';
+import cors from 'cors';
 
 import Template from '../template';
-import Visualisation from '../react-components/visualisation';
+import Visualisation from '../client/react-components/Visualise';
 
 //esm imports 
-import getChartData from '../scripts/preparechartscript';
-import { writeDb } from '../scripts/mongocontrol';
-import makeSearch from '../scripts/searchscript';
-import queryPackage from '../scripts/packagequeryscript';
+import getChartData from './scripts/preparechartscript';
+import { writeDb } from './scripts/mongocontrol';
+import makeSearch from './scripts/searchscript';
+import queryPackage from './scripts/packagequeryscript';
+// new react imports
+import userRoutes from './routes/user.routes';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import MainRouter from '../client/MainRouter';
+import {StaticRouter} from 'react-router-dom';
+import {ServerStyleSheets, ThemeProvider} from '@mui/styles';
+import theme from '../client/theme';
 
 // set app
 const app = express();
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
 const router = Router();
-
 app.use(router);
-
+app.use(helmet());
+app.use(cors());
 app.set('view engine', 'ejs');
-
 const CURRENT_WORKING_DIR = process.cwd();
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 devBundle.compile(app);
 
+app.use('/', userRoutes);
+
 const PORT = process.env.PORT || 8080;
 //const MONGODB_URI = process.env.MONGODB_URI;
+
+app.get('*', (req,res) => {
+    const sheets = new ServerStyleSheets();
+    const context = {};
+    const markup = ReactDOMServer.renderToString(
+        sheets.collect(
+            <StaticRouter location={req.url} context={context}>
+                <ThemeProvider theme={theme}>
+                    <MainRouter/>
+                </ThemeProvider>
+            </StaticRouter>
+        )
+    );
+
+    if (context.url) {
+        return res.redirect(303, context.url);
+    }
+
+    const css = sheets.toString();
+
+    res.status(200).send(Template({
+        markup:markup,
+        css:css
+    }));
+
+});
+
+//old express code below:
 
 //render the page in ejs
 router.get('/', function (req, res) {
