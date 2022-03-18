@@ -12,7 +12,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server';
 import MainRouter from '../client/MainRouter';
 import {StaticRouter} from 'react-router-dom';
-import { ServerStyleSheets, ThemeProvider } from '@mui/styles';
+import { ServerStyleSheets, ThemeProvider } from '@mui/material/styles';
 import theme from './../client/theme';
 
 const CURRENT_WORKING_DIR = process.cwd();

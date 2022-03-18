@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import path from 'path';
 import devBundle from './devBundle';
-import helmet, { contentSecurityPolicy } from 'helmet';
+import helmet from 'helmet';
 import cors from 'cors';
 
 import Template from '../template';
