@@ -12,7 +12,8 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server';
 import MainRouter from '../client/MainRouter';
 import {StaticRouter} from 'react-router-dom';
-import { ServerStyleSheets, ThemeProvider } from '@mui/material/styles';
+import { ServerStyleSheets } from '@mui/styles';
+import { ThemeProvider } from '@emotion/react'
 import theme from './../client/theme';
 
 const CURRENT_WORKING_DIR = process.cwd();

@@ -1,14 +1,6 @@
 // Base imports
 import React from 'react';
 import {Route,Switch} from 'react-router-dom';
-import { 
-    AppBar,
-    Toolbar,
-    Typography,
-    IconButton,
-    HomeIcon,
-    Button,
-} from '@mui/material';
 import Menu from './core/Menu';
 // Page component imports
 import Visualise from './react-components/Visualise';

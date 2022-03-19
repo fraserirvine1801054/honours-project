@@ -1,20 +1,10 @@
-import config from './../config/config'
-import webpack from 'webpack'
-import webpackMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-import webpackConfig from './../webpack.config.client.js'
-
-const compile = (app) => {
-  if(config.env === "development"){
-    const compiler = webpack(webpackConfig)
-    const middleware = webpackMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath
-    })
-    app.use(middleware)
-    app.use(webpackHotMiddleware(compiler))
-  }
+const config = {
+  env : process.env.NODE_ENV || 'development',
+  port : process.env.PORT || 3000,
+  jwtSecret : process.env.JWT_SECRET || "YOUR_secret_key",
+  mongoUri : process.env.MONGODB_URI || 
+      process.env.MONGO_HOST ||
+      'mongodb://' + (process.env.IP || '127.0.0.1') + ":" +
+      (process.env.MONGO_PORT || '27017') + '/mydb/'
 }
-
-export default {
-  compile
-}
+export default config;

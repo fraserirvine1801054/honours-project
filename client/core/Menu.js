@@ -5,9 +5,9 @@ import {
     Toolbar,
     Typography,
     IconButton,
-    HomeIcon,
-    Button,
+    Button
 } from '@mui/material';
+import { Home as HomeIcon} from '@mui/icons-material';
 
 const isActive = (history, path) => {
     if (history.location.pathname === path){

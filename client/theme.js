@@ -1,8 +1,7 @@
 //import { createMuiTheme } from "@mui/styles";
-import { createTheme } from "@mui/styles";
 import { pink } from "@mui/material/colors";
 
-const theme = createTheme({
+const theme = {
     typography: {
         useNextVariants: true,
     },
@@ -23,6 +22,6 @@ const theme = createTheme({
         protectedTitle: pink['400'],
         type: 'light'
     }
-});
+};
 
 export default theme;

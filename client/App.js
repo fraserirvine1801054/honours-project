@@ -1,7 +1,7 @@
 import React from 'react';
 import MainRouter from './MainRouter';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
 import {hot} from 'react-hot-loader';
 import theme from './theme';
 
