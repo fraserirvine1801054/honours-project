@@ -1,13 +1,11 @@
 import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import HomeIcon from '@material-ui/icons/Home';
+import Button from '@material-ui/core/Button';
 import {Link, withRouter} from 'react-router-dom';
-import { 
-    AppBar,
-    Toolbar,
-    Typography,
-    IconButton,
-    Button
-} from '@mui/material';
-import { Home as HomeIcon} from '@mui/icons-material';
 
 const isActive = (history, path) => {
     if (history.location.pathname === path){
@@ -16,7 +14,7 @@ const isActive = (history, path) => {
         return {color: '#ffffff'};
     }
 }
-const Menu = withRouter(({history}) => {
+const Menu = withRouter(({history}) => (
     <AppBar position='static'>
         <Toolbar>
             <Typography variant='h6' color='inherit'>
@@ -32,6 +30,6 @@ const Menu = withRouter(({history}) => {
             </Link>
         </Toolbar>
     </AppBar>
-});
+));
 
 export default Menu;

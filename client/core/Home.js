@@ -1,12 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import { makeStyles } from '@mui/styles';
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+//import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     card: {

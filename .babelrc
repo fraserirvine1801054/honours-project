@@ -1,15 +1,15 @@
 {
-    "presets": [
-        [
-            "@babel/preset-env",
+    "presets" : [
+        ["@babel/preset-env",
             {
-                "targets": {
-                    "node": "current"
-                },
-                "useBuiltIns": "entry"
+                "targets" : {
+                    "node" : "current"
+                }
             }
-        
         ],
         "@babel/preset-react"
+    ],
+    "plugins":[
+        "react-hot-loader/babel"
     ]
 }

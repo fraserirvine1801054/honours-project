@@ -9,3 +9,7 @@ const getVisData = async (params,signal) => {
         console.log(err);
     }
 }
+
+export {
+    getVisData
+}
