@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import {
     Card,
     CardContent,
@@ -35,6 +36,8 @@ export default function SearchPage({ match }) {
         row_count: 10
     });
 
+    let history = useHistory();
+
     useEffect(() => {
         console.log(values);
     }, []);
@@ -45,6 +48,14 @@ export default function SearchPage({ match }) {
 
     const clickSubmit = () => {
         console.log(values);
+        //add query params to url
+        let searchTerms = values.search_terms;
+        let dataType = values.data_type;
+        let rowStart = parseInt(values.row_start);
+        let rowCount = parseInt(values.row_count);
+
+        history.push(`/search/?searchTerms=${searchTerms}&dataType=${dataType}&rowStart=${rowStart}&rowCount=${rowCount}`);
+
     }
 
     return (
@@ -54,7 +65,7 @@ export default function SearchPage({ match }) {
             </Typography>
             <Card>
                 <CardContent>
-                    
+
                     <FormControl
                         component='fieldset'
                     >
@@ -95,7 +106,6 @@ export default function SearchPage({ match }) {
                             label='Show results from start of row index'
                             type='number'
                             value={values.row_start}
-                            defaultValue={0}
                             onChange={handleChange('row_start')}
                         />
                         <TextField
@@ -103,12 +113,11 @@ export default function SearchPage({ match }) {
                             label='The count of how many rows'
                             type='number'
                             value={values.row_count}
-                            defaultValue={10}
                             onChange={handleChange('row_count')}
                         />
                     </FormControl>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <Button
                         color='primary'
                         variant='contained'
@@ -118,6 +127,13 @@ export default function SearchPage({ match }) {
                     </Button>
                 </CardContent>
             </Card>
+
+            {
+                searchReturns.length > 0 && (<span>
+
+                </span>)
+            }
+
         </Paper>
     )
 }
