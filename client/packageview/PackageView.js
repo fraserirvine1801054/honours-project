@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getPackage } from './api-packageview';
-
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardContent,
@@ -94,8 +94,17 @@ export default function PackageView({ match }) {
                                                 {'Data ID: ' + item.data_id}
                                             </Typography>
                                             <Typography>
-                                                {'Original URL: ' + item.data_url}
+                                                {'Original URL: '} <a href={item.data_url} target="_blank">{item.data_url}</a>
                                             </Typography>
+                                            <Link to={`/visualise/${item.data_id}`}>
+                                                <Button
+                                                    color='primary'
+                                                    variant='contained'
+                                                    size='small'
+                                                >
+                                                    Visualise this Data
+                                                </Button>
+                                            </Link>
                                         </CardContent>
                                     </Card>
                                 </Grid>
