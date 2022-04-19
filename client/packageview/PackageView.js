@@ -96,7 +96,7 @@ export default function PackageView({ match }) {
                                             <Typography>
                                                 {'Original URL: '} <a href={item.data_url} target="_blank">{item.data_url}</a>
                                             </Typography>
-                                            <Link to={`/visualise/${item.data_id}`}>
+                                            <Link to={`/visualisation/${item.data_id}`}>
                                                 <Button
                                                     color='primary'
                                                     variant='contained'
