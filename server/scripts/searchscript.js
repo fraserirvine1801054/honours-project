@@ -141,7 +141,7 @@ async function getPackageObject(apiObject, dataTypeObject) {
 
         console.log("creating search object");
         let myObj = {
-            "title": `Title: ${apiObject.title}`,
+            "title": `${apiObject.title}`,
             "date_created": `Date Created: ${apiObject.metadata_created}`,
             "date_modified": `Last Modified: ${apiObject.metadata_modified}`,
             "licence": `Licence: ${apiObject.license_title}`,

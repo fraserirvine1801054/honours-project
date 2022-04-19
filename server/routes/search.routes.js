@@ -3,5 +3,7 @@ import { getSearch } from '../controllers/searchController';
 
 const router = express.Router();
 
-router.route('/api/search/')
+router.route('/api/search')
     .get(getSearch);
+
+export default router;

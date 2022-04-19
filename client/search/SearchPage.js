@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { getSearchReturns } from './api-search';
 import {
     Card,
     CardContent,
@@ -11,7 +12,9 @@ import {
     RadioGroup,
     TextField,
     Typography,
-    Button
+    Button,
+    Grid,
+    CardHeader
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function SearchPage({ match }) {
+export default function SearchPage() {
 
     const classes = useStyles();
     const [searchReturns, setSearchReturns] = useState([]);
@@ -38,9 +41,25 @@ export default function SearchPage({ match }) {
 
     let history = useHistory();
 
+    const getSearches = (query) => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        getSearchReturns(signal, query).then((data) => {
+            console.log(data);
+            if (data && data.error) {
+                console.log(data.error);
+            } else {
+                setSearchReturns(data);
+            }
+        });
+    }
+    const { search } = useLocation();
+
     useEffect(() => {
-        console.log(values);
-    }, []);
+        console.log(search);
+        getSearches(search);
+    }, [history]);
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -54,8 +73,11 @@ export default function SearchPage({ match }) {
         let rowStart = parseInt(values.row_start);
         let rowCount = parseInt(values.row_count);
 
-        history.push(`/search/?searchTerms=${searchTerms}&dataType=${dataType}&rowStart=${rowStart}&rowCount=${rowCount}`);
+        let newQuery = `?searchTerms=${searchTerms}&dataType=${dataType}&rowStart=${rowStart}&rowCount=${rowCount}`
 
+        history.push(`/search${newQuery}`);
+
+        getSearches(newQuery);
     }
 
     return (
@@ -130,7 +152,32 @@ export default function SearchPage({ match }) {
 
             {
                 searchReturns.length > 0 && (<span>
-
+                    <Grid
+                        container
+                        direction='column'
+                        spacing={2}
+                    >
+                        {searchReturns.map((item, i) => {
+                            return (
+                                <Grid item>
+                                    <Card key={i} elevation={4}>
+                                        <CardHeader
+                                            title={item.title}
+                                            subheader={`${item.date_created} ${item.date_modified}`}
+                                        />
+                                        <CardContent>
+                                            <Typography>
+                                                {item.licence}
+                                            </Typography>
+                                            <Typography>
+                                                {item.resources}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )
+                        })}
+                    </Grid>
                 </span>)
             }
 

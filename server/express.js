@@ -8,6 +8,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import Template from './../template';
 import userRoutes from './routes/user.routes';
+import searchRoutes from './routes/search.routes';
 import devBundle from './devBundle';
 // modules for serverside rendering
 import React from 'react'
@@ -33,6 +34,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/', userRoutes);
+app.use('/', searchRoutes);
 
 app.get('*', (req,res) => {
     const sheets = new ServerStyleSheets();

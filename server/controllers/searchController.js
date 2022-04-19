@@ -2,6 +2,7 @@ import makeSearch from "../scripts/searchscript"
 
 const getSearch = async (req,res) => {
     //extract query params
+    console.log("getsearchcall");
     let searchTerms = req.query.searchTerms;
     let dataType = req.query.dataType;
     let rowStart = req.query.rowStart;
