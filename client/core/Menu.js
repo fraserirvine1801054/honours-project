@@ -25,6 +25,9 @@ const Menu = withRouter(({history}) => (
                     <HomeIcon />
                 </IconButton>
             </Link>
+            <Link to='/search'>
+                <Button style={isActive(history, '/search')}>search</Button>
+            </Link>
             <Link to='/insertdata'>
                 <Button style={isActive(history, '/insertdata')}>DEBUG: Insert data</Button>
             </Link>

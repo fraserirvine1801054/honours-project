@@ -3,6 +3,7 @@ import React from 'react';
 import {Route,Switch} from 'react-router-dom';
 import Menu from './core/Menu';
 import Home from './core/Home';
+import SearchPage from './search/SearchPage';
 // Page component imports
 //import Visualise from './react-components/Visualise';
 
@@ -13,6 +14,7 @@ const MainRouter = () => {
             <Menu />
             <Switch>
                 <Route exact path='/' component={Home}/>
+                <Route path='/search' component={SearchPage}/>
             </Switch>
         </div>
     );
