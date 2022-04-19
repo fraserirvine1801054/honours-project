@@ -1,4 +1,5 @@
 import makeSearch from "../scripts/searchscript"
+import queryPackage from "../scripts/packagequeryscript";
 
 const getSearch = async (req,res) => {
     //extract query params
@@ -19,6 +20,20 @@ const getSearch = async (req,res) => {
     }
 }
 
+const getPackage = async (req,res) => {
+    let packageId = req.params.package_id;
+
+    try {
+        let packageObj = await queryPackage(packageId);
+        res.json(packageObj);
+    } catch (err) {
+        return res.status(400).json({
+            error: "error in getPackage()"
+        });
+    }
+}
+
 export {
-    getSearch
+    getSearch,
+    getPackage
 }
