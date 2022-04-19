@@ -44,7 +44,8 @@ export default function Home() {
                 </Typography>
                 <Typography>
                     User Interface components may not display correctly on mobile devices.
-                    please take this into consideration when viewing this website on mobile devices
+                    please take this into consideration when viewing this website on mobile devices by
+                    enabling Desktop Site viewing on your mobile web browser.
                 </Typography>
             </CardContent>
         </Card>
