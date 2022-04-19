@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node ./dist/server.generated.js",
     "bash-start": "bash start.sh",
-    "development": "nodemon"
+    "development": "nodemon",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js"
   },
   "repository": {
     "type": "git",
