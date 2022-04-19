@@ -142,11 +142,11 @@ async function getPackageObject(apiObject, dataTypeObject) {
         console.log("creating search object");
         let myObj = {
             "title": `${apiObject.title}`,
-            "date_created": `Date Created: ${apiObject.metadata_created}`,
-            "date_modified": `Last Modified: ${apiObject.metadata_modified}`,
-            "licence": `Licence: ${apiObject.license_title}`,
-            "data_type": `Data Types: ${dataTypeObject.dataTypes}`,
-            "resources": `Number of Resources: ${apiObject.resources.length}`,
+            "date_created": `${apiObject.metadata_created}`,
+            "date_modified": `${apiObject.metadata_modified}`,
+            "licence": `${apiObject.license_title}`,
+            "data_type": `${dataTypeObject.dataTypes}`,
+            "resources": `${apiObject.resources.length}`,
             "package_id": apiObject.id,
             "package_hasdb": packageHasDb,
             "package_hasdb_text": hasDbText

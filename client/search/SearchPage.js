@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { getSearchReturns } from './api-search';
 import {
     Card,
@@ -163,15 +163,44 @@ export default function SearchPage() {
                                     <Card key={i} elevation={4}>
                                         <CardHeader
                                             title={item.title}
-                                            subheader={`${item.date_created} ${item.date_modified}`}
+                                            subheader={'Date Created: ' + item.date_created + 'Date last modified: ' + item.date_modified}
                                         />
                                         <CardContent>
                                             <Typography>
-                                                {item.licence}
+                                                {'License: ' + item.licence}
                                             </Typography>
                                             <Typography>
-                                                {item.resources}
+                                                {'Number of Resources: ' + item.resources}
                                             </Typography>
+                                            <Typography>
+                                                {'Data Types: ' + item.data_type}
+                                            </Typography>
+                                            {
+                                                item.package_hasdb && (<span>
+                                                    <Link to={`/packageview/${item.package_id}`}>
+                                                        <Button
+                                                            color='primary'
+                                                            variant='contained'
+                                                            size='small'
+                                                        >
+                                                            View this Package (Contains Visualisation)
+                                                        </Button>
+                                                    </Link>
+                                                </span>)
+                                            }
+                                            {
+                                                !item.package_hasdb && (<span>
+                                                    <Link to={`/packageview/${item.package_id}`}>
+                                                        <Button
+                                                            color='primary'
+                                                            variant='contained'
+                                                            size='small'
+                                                        >
+                                                            View this Package
+                                                        </Button>
+                                                    </Link>
+                                                </span>)
+                                            }
                                         </CardContent>
                                     </Card>
                                 </Grid>
