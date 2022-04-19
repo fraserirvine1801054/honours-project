@@ -46,6 +46,7 @@ app.get('*', (req,res) => {
             </StaticRouter>
         )
     );
+    console.log("markup created");
 
     if (context.url) {
         return res.redirect(303, context.url);
