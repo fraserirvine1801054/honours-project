@@ -40,7 +40,11 @@ export default function Home() {
             </Typography>
             <CardContent>
                 <Typography variant='body1' component='p'>
-                    Welcome to the Honours Project home page.
+                    Welcome to the homepage of the Honours Project: "Data is all around"!
+                </Typography>
+                <Typography>
+                    User Interface components may not display correctly on mobile devices.
+                    please take this into consideration when viewing this website on mobile devices
                 </Typography>
             </CardContent>
         </Card>
