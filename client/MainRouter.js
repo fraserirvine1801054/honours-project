@@ -18,7 +18,7 @@ const MainRouter = () => {
                 <Route exact path='/' component={Home}/>
                 <Route path='/search' component={SearchPage}/>
                 <Route path='/packageview/:package_id' component={PackageView}/>
-                <Route path='/visualisation/:data_id' component={Visualisation}/>
+                <Route path='/visualisation/:dataid' component={Visualisation}/>
             </Switch>
         </div>
     );

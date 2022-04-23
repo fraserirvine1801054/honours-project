@@ -9,6 +9,7 @@ import helmet from 'helmet';
 import Template from './../template';
 import userRoutes from './routes/user.routes';
 import searchRoutes from './routes/search.routes';
+import visRoutes from './routes/vis.routes';
 import devBundle from './devBundle';
 // modules for serverside rendering
 import React from 'react'
@@ -35,6 +36,7 @@ app.use(cors());
 
 app.use('/', userRoutes);
 app.use('/', searchRoutes);
+app.use('/', visRoutes);
 
 app.get('*', (req,res) => {
     const sheets = new ServerStyleSheets();

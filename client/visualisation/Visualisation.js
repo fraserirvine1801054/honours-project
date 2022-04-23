@@ -21,6 +21,8 @@ import {
     TableRow,
 } from '@material-ui/core';
 
+import { getVisualisationData } from './api-visualisation';
+
 //import example for demo purposes only
 
 import {
@@ -36,48 +38,9 @@ import {
 import { Line } from 'react-chartjs-2';
 import faker from '@faker-js/faker';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
 
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        title: {
-            display: true,
-            text: 'Demo visualisation using react chartjs2',
-        },
-    },
-};
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Dataset 1',
-            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-            label: 'Dataset 2',
-            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-    ],
-};
 
 const useStyles = makeStyles(theme => ({
     root: theme.mixins.gutters({
@@ -90,25 +53,88 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Visualisation() {
+export default function Visualisation({ match }) {
 
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Legend
+    );
+
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Dataset 1',
+                data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            }
+        ],
+    };
     const classes = useStyles();
+    const [visData, setVisData] = useState([]);
+    const [chartData, setChartData] = useState(data);
+
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Demo visualisation using react chartjs2',
+            },
+        },
+    };
+
 
     useEffect(() => {
 
-    })
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        getVisualisationData(signal, match.params.dataid).then((data) => {
+            console.log(data);
+            if (data && data.error) {
+                console.log(data.error);
+            } else {
+                setVisData(data);
+            }
+        })
+
+    }, [match.params.dataid]);
 
     return (
         <Paper className={classes.root} elevation={4}>
             <Typography variant='h2'>
                 Visualisation
             </Typography>
-            <Card>
-                <CardHeader
-                    title='Demo visualisation'
-                />
-                <Line options={options} data={data} />
-            </Card>
+            {
+                visData.length === 0 && (<span>
+                    <Typography>
+                        Error: Dataset does not contain visualisation
+                    </Typography>
+                </span>)
+            }
+            {
+                visData.length > 0 && (<span>
+                    <Card>
+                        <CardHeader
+                            title='Demo visualisation'
+                        />
+                        {console.log(chartData)}
+                        <Line options={options} data={data} />
+                    </Card>
+                </span>)
+            }
         </Paper>
     )
 
